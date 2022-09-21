@@ -1,8 +1,9 @@
 /**définit le middleware permettant de parser les données envoyées par la méthode post */
-const bodyParser = require('body-parser')
 const express = require('express')
 const path = require('path')
+const pgClient = require('pg')
 
+const bodyParser = require('body-parser')
 const https = require('https')
 const fs = require('fs')    // définit module fs (gestion des fichiers)
 
