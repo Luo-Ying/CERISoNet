@@ -1,3 +1,4 @@
+const dotenv = require('dotenv').config()
 /**définit le middleware permettant de parser les données envoyées par la méthode post */
 const express = require('express')
 const path = require('path')
@@ -28,9 +29,29 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, './index.htm'))   // Renvoyer la fichier ./index.htm
 })
 
+const user_dbpsql = process.env.DBPSQL_USER
+const password_dbpsql = process.env.DBPSQL_PASSWORD
+const database_dbpsql = process.env.DBPSQL_DATABASE
+const host_dbpsql = process.env.DBPSQL_HOST
+const port_dbpsql = process.env.DBPSQL_PORT
+
 /**Route '/login' */
 app.post('/login', (req, res) => {
     console.log("username: ", req.body.username)
     console.log("password: ", req.body.password)
+    // sql = `SELECT * FROM fredouil.users where identifiant=${req.body.username};`
+    let pool = new pgClient.Pool({
+        user: user_dbpsql,
+        host: host_dbpsql,
+        database: database_dbpsql,
+        password: password_dbpsql,
+        port: port_dbpsql
+    });
+    pool.connect((err, client, done) => {
+        if (err) { console.log(`Error connecting to pg server ${err.stack}`) }
+        else {
+            console.log('Connection established with pg db server')
+        }
+    })
     res.send("Hello World!")
 })
