@@ -11,8 +11,8 @@ const https = require('https')
 const fs = require('fs')    /**définit module fs (gestion des fichiers) */
 const crypto = require('crypto')
 
-const session = require('express-session')
 const { response } = require('express')
+const session = require('express-session')
 /**définit le middleware connect-mongodb-session pour gérer le stockage des
 informations de sessions gérées par express-session */
 const MongoDBStore = require('connect-mongodb-session')(session)
@@ -24,15 +24,16 @@ const secret_sessionMongoDB = process.env.DBMONGO_SESSION_SECRET
 const storURI_sessionMongoDB = process.env.DBMONGO_SESSION_STORE_URI
 const storeCollection_sessionMongoDB = process.env.DBMONGO_SESSION_STORE_COLLECTION
 
-app.use(session({
+app.use(session({   /** charge le middleware express-session dans la pile */
     secret: secret_sessionMongoDB,
-    saveUninitialized: false,
-    store: new MongoDBStore({
-        uri: storURI_sessionMongoDB,
-        collection: storeCollection_sessionMongoDB,
-        touchAfter: 24 * 3600
+    saveUninitialized: false,   /**Session créée uniquement à la première sauvegarde de données */
+    resave: false,  /** pas de session sauvegardée si pas de modif */
+    store: new MongoDBStore({   /**instance de connect-mongodb-session */
+        uri: storURI_sessionMongoDB,    /**BD dans MongoDb */
+        collection: storeCollection_sessionMongoDB,/**nom collection dans MongoDb */
+        touchAfter: 24 * 3600   /** 1 sauvegarde toutes les 24h hormis si données MAJ */
     }),
-    cookie: { maxAge: 24 * 3600 * 1000 }
+    cookie: { maxAge: 24 * 3600 * 1000 }    /**millisecond valeur par défaut */
 }))
 
 /**Charge le middleware bodyParser dans la pile pour lire les données au format HTML (&, =, %) */
@@ -51,7 +52,7 @@ let server = https.createServer(options, app).listen(3231, () => {
 /**Route racine('/') du server */
 app.get('/', (req, res) => {
     console.log('listening on 3231')
-    res.sendFile(path.join(__dirname, './index.htm'))   // Renvoyer la fichier ./index.htm
+    res.sendFile(path.join(__dirname, './index.htm'))   /**Renvoyer la fichier ./index.htm */
 })
 
 /**Récupérer les infos de compte dans le fichier .env pour connecter db psql */
@@ -67,7 +68,9 @@ app.post('/login', (req, res) => {
     /**Chiffrer mot de passe en sha1 */
     shacode.update(req.body.password)
     const password = shacode.digest('hex')
+    /**vérification des informations de login auprès de la base postgresql */
     const sql = `SELECT * FROM fredouil.users where identifiant='${username}';`
+    /**instance de connexion avec toutes les informations de la BD */
     let pool = new pgClient.Pool({
         user: user_dbpsql,
         host: host_dbpsql,
@@ -76,15 +79,20 @@ app.post('/login', (req, res) => {
         port: port_dbpsql
     });
     let responseData = {}
+    /**
+     * Connexion à la base => objet de connexion : client
+     * fonctionne également en promesse avec then et catch ! */
     pool.connect((err, client, done) => {
         if (err) { console.log(`Error connecting to pg server ${err.stack}`) }
         else {
             console.log('Connection established with pg db server')
+            /**Exécution de la requête SQL et traitement du résultat */
             client.query(sql, (err, result) => {
                 if (err) {
                     console.log('Erreur d\'exécution de la requete' + err.stack)
                     responseData.statusMsg = 'Connexion échouée'
                 }
+                /**requête réussie => traitement du résultat stocké dans l’objet result */
                 else if ((result.rows[0] !== null) && (result.rows[0].motpasse === password)) {
                     req.session.isConnected = true
                     responseData.data = result.rows[0].nom
@@ -95,12 +103,11 @@ app.post('/login', (req, res) => {
                     responseData.statusMsg = 'Connexion échouée : informations de connexion incorrecte';
                 }
                 console.log(responseData)
-                res.send(responseData)
+                res.send(responseData)  /** renvoi du résultat (ou des messages d’erreur) */
                 console.log("ok");
             })
-            client.release()
+            client.release()    /**connexion libérée */
         }
 
     })
-    // client.release()
 })
