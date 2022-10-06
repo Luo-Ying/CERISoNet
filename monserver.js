@@ -17,8 +17,13 @@ const session = require('express-session')
 informations de sessions gérées par express-session */
 const MongoDBStore = require('connect-mongodb-session')(session)
 
+const cors = require('cors')
+
 const app = express();
-const shacode = crypto.createHash('sha1')
+
+app.use(cors())
+app.use(express.urlencoded())
+app.use(express.json())
 
 const secret_sessionMongoDB = process.env.DBMONGO_SESSION_SECRET
 const storURI_sessionMongoDB = process.env.DBMONGO_SESSION_STORE_URI
@@ -52,7 +57,8 @@ let server = https.createServer(options, app).listen(3231, () => {
 /**Route racine('/') du server */
 app.get('/', (req, res) => {
     console.log('listening on 3231')
-    res.sendFile(path.join(__dirname, './index.htm'))   /**Renvoyer la fichier ./index.htm */
+    // res.sendFile(path.join(__dirname, './index.htm'))   /**Renvoyer la fichier ./index.htm */
+    res.send({ "text": "coucou" })
 })
 
 /**Récupérer les infos de compte dans le fichier .env pour connecter db psql */
@@ -64,6 +70,8 @@ const port_dbpsql = process.env.DBPSQL_PORT
 
 /**Route '/login' */
 app.post('/login', (req, res) => {
+
+    const shacode = crypto.createHash('sha1')
     const username = req.body.username
     /**Chiffrer mot de passe en sha1 */
     shacode.update(req.body.password)

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Input } from '@angular/core';
 
 @Component({
   selector: 'app-bandeau',
@@ -7,7 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BandeauComponent implements OnInit {
 
-  constructor() { }
+  @Input()
+  message: string;
+
+  constructor() { this.message = "Coucou" }
 
   ngOnInit(): void {
   }
