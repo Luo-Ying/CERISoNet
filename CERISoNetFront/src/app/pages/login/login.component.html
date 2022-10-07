@@ -92,7 +92,9 @@
 <div class="wrapper">
     <div id="formContent">
         <br />
-
+        <div *ngIf="this.isBandeauVisible == true">
+            <app-bandeau message={{message}} msgType={{msgType}}></app-bandeau>
+        </div>
         <!-- Login Form -->
         <form [formGroup]="formData" (ngSubmit)="onSubmit()">
             <input type="text" name="username" placeholder="username" formControlName="username">

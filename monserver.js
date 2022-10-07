@@ -97,17 +97,20 @@ app.post('/login', (req, res) => {
             /**Exécution de la requête SQL et traitement du résultat */
             client.query(sql, (err, result) => {
                 if (err) {
+                    responseData.status = 204
                     console.log('Erreur d\'exécution de la requete' + err.stack)
                     responseData.statusMsg = 'Connexion échouée'
                 }
                 /**requête réussie => traitement du résultat stocké dans l’objet result */
                 else if ((result.rows[0] !== null) && (result.rows[0].motpasse === password)) {
                     req.session.isConnected = true
+                    responseData.status = 200
                     responseData.data = result.rows[0].nom
                     responseData.statusMsg = `Connexion réussie : bonjour ${result.rows[0].prenom}`
                 }
                 else {
-                    console.log('Connexion échouée : informations de connexion incorrecte');
+                    responseData.status = 204
+                    // console.log('Connexion échouée : informations de connexion incorrecte');
                     responseData.statusMsg = 'Connexion échouée : informations de connexion incorrecte';
                 }
                 console.log(responseData)

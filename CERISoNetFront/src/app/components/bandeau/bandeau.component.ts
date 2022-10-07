@@ -11,9 +11,16 @@ export class BandeauComponent implements OnInit {
   @Input()
   message: string;
 
-  constructor() { this.message = "Coucou" }
+  @Input()
+  msgType: string;
+
+  constructor() {
+    this.message = "oooo";
+    this.msgType = "ookk";
+  }
 
   ngOnInit(): void {
+
   }
 
 }

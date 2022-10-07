@@ -2,6 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormControl, FormGroup } from '@angular/forms';
 
+
+interface Response {
+  data?: any;
+  status?: any;
+  statusMsg?: any;
+}
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -9,7 +16,12 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
 
-  public res: Object = {};
+  response: Response = {};
+
+  message: string = '';
+  msgType: string = '';
+
+  isBandeauVisible: boolean = false;
 
   formData!: FormGroup;
 
@@ -22,7 +34,6 @@ export class LoginComponent implements OnInit {
   options = { headers: { 'Content-Type': 'application/json' } };
 
   constructor(private http: HttpClient) {
-
   }
 
   ngOnInit(): void {
@@ -31,19 +42,24 @@ export class LoginComponent implements OnInit {
       username: new FormControl(),
       password: new FormControl()
     });
-
-    // this.http.get('https://pedago.univ-avignon.fr:3231/', this.options).subscribe(response => {
-    //   this.res = response;
-    //   console.log(this.res);
-    // })
   }
 
   onSubmit() {
     console.log(this.formData.value);
     this.http.post('https://pedago.univ-avignon.fr:3231/login', this.formData.value, this.options).subscribe(response => {
-      this.res = response;
-      console.log(this.res);
+      this.response = response;
+      console.log(this.response);
+      this.message = this.response.statusMsg
+      if (this.response.status === 200) {
+        this.msgType = "info"
+      } else {
+        this.msgType = "danger"
+      }
     })
+    this.isBandeauVisible = true;
+    setTimeout(() => {
+      this.isBandeauVisible = false
+    }, 5000);
   }
 
 }

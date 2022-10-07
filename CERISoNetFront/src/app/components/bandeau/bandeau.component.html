@@ -1,4 +1,7 @@
 <!-- fichier component.bandeau.html -->
-<div>
-    <p class="alert alert-info">{{message}}</p>
+<div *ngIf="this.msgType == 'danger'">
+  <p class="alert alert-danger">{{message}}</p>
+</div>
+<div *ngIf="this.msgType == 'info'">
+  <p class="alert alert-info">{{message}}</p>
 </div>
