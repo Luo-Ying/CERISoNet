@@ -106,7 +106,7 @@ app.post('/login', (req, res) => {
                     req.session.isConnected = true
                     responseData.status = 200
                     responseData.data = result.rows[0].nom
-                    responseData.statusMsg = `Connexion réussie : bonjour ${result.rows[0].prenom}`
+                    responseData.statusMsg = `connexion réussie : bonjour ${result.rows[0].prenom}`
                 }
                 else {
                     responseData.status = 204

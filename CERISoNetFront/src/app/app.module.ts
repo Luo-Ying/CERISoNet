@@ -12,6 +12,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { HeaderComponent } from './components/layout/header/header.component';
 import { FooterComponent } from './components/layout/footer/footer.component';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
+import { TitleCasePipePipe } from './pipes/title-case-pipe.pipe';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { LandingPageComponent } from './pages/landing-page/landing-page.componen
     LoginComponent,
     HeaderComponent,
     FooterComponent,
-    LandingPageComponent
+    LandingPageComponent,
+    TitleCasePipePipe
   ],
   imports: [
     BrowserModule,
