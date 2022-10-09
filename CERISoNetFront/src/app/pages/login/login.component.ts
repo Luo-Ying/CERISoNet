@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 
 
 interface Response {
@@ -25,16 +26,11 @@ export class LoginComponent implements OnInit {
 
   formData!: FormGroup;
 
-  optionRequete = {
-    headers: new HttpHeaders({
-      'Access-Control-Allow-Origin': '*',
-    })
-  };
-
   options = { headers: { 'Content-Type': 'application/json' } };
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(
+    private http: HttpClient,
+    private router: Router) { }
 
   ngOnInit(): void {
 
@@ -52,6 +48,7 @@ export class LoginComponent implements OnInit {
       this.message = this.response.statusMsg
       if (this.response.status === 200) {
         this.msgType = "info"
+        this.router.navigate(['/landingPage'], { queryParams: { message: this.message, msgType: this.msgType } });
       } else {
         this.msgType = "danger"
       }

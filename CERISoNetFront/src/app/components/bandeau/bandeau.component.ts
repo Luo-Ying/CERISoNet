@@ -9,17 +9,18 @@ import { Input } from '@angular/core';
 export class BandeauComponent implements OnInit {
 
   @Input()
-  message: string;
+  message: string = '';
 
   @Input()
-  msgType: string;
+  msgType: string = '';
 
-  constructor() {
-    this.message = "oooo";
-    this.msgType = "ookk";
-  }
+  constructor() { }
 
   ngOnInit(): void {
+    console.log("coucou");
+    console.log(this.message);
+    console.log(this.msgType);
+
 
   }
 

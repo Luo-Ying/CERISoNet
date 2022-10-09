@@ -1,14 +1,12 @@
 <!-- https://pedago.univ-avignon.fr/~uapv1903453 -->
 <!-- template resource: https://bootsnipp.com/snippets/dldxB -->
 
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-
+<div *ngIf="this.isBandeauVisible == true">
+    <app-bandeau message={{message}} msgType={{msgType}}></app-bandeau>
+</div>
 <div class="wrapper">
     <div id="formContent">
         <br />
-        <div *ngIf="this.isBandeauVisible == true">
-            <app-bandeau message={{message}} msgType={{msgType}}></app-bandeau>
-        </div>
         <!-- Login Form -->
         <form [formGroup]="formData" (ngSubmit)="onSubmit()">
             <input type="text" name="username" placeholder="username" formControlName="username">

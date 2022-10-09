@@ -1,0 +1,9 @@
+
+.bandeau {
+    width: 25%;
+    text-align: center;
+    display: flex;
+    align-content: center;
+    position: relative;
+    margin-left: 37.5%;
+}
