@@ -7,8 +7,9 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "creatComponent": "node_modules/@angular/cli/bin/ng.js generate component {name_component}",
-    "creatPipe": "node_modules/@angular/cli/bin/ng.js generate pipe {name_pipe}"
+    "creatComponent": "node_modules/@angular/cli/bin/ng.js generate component components/{name_component}",
+    "creatPipe": "node_modules/@angular/cli/bin/ng.js generate pipe pipes/{name_pipe}",
+    "creatService": "node_modules/@angular/cli/bin/ng.js generate service services/{name_service}"
   },
   "private": true,
   "dependencies": {

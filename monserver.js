@@ -70,7 +70,7 @@ const port_dbpsql = process.env.DBPSQL_PORT
 
 /**Route '/login' */
 app.post('/login', (req, res) => {
-
+    console.log(req.body);
     const shacode = crypto.createHash('sha1')
     const username = req.body.username
     /**Chiffrer mot de passe en sha1 */

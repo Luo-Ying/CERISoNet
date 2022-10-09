@@ -13,9 +13,11 @@ import { HeaderComponent } from './components/layout/header/header.component';
 import { FooterComponent } from './components/layout/footer/footer.component';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
 import { TitleCasePipePipe } from './pipes/title-case-pipe.pipe';
+import { AuthentificationService } from './services/authentification.service'
+import { VarGlobService } from './services/var-glob.service'
 
 @NgModule({
-  declarations: [
+  declarations: [ /** Déclaration des composants, pipes, directives */
     AppComponent,
     BandeauComponent,
     LoginComponent,
@@ -24,13 +26,16 @@ import { TitleCasePipePipe } from './pipes/title-case-pipe.pipe';
     LandingPageComponent,
     TitleCasePipePipe
   ],
-  imports: [
+  imports: [  /** Déclaration des modules utilisables */
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [  /**Déclaration des services utilisables / singleton */
+    AuthentificationService,
+    VarGlobService
+  ],
+  bootstrap: [AppComponent] /**  Déclaration du composant racine */
 })
 export class AppModule { }

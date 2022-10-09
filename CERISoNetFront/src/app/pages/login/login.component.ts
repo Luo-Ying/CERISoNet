@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthentificationService } from 'src/app/services/authentification.service';
+import { VarGlobService } from 'src/app/services/var-glob.service';
 
 
 interface Response {
@@ -17,6 +19,8 @@ interface Response {
 })
 export class LoginComponent implements OnInit {
 
+  options = { headers: { 'Content-Type': 'application/json' } };
+
   response: Response = {};
 
   message: string = '';
@@ -26,33 +30,46 @@ export class LoginComponent implements OnInit {
 
   formData!: FormGroup;
 
-  options = { headers: { 'Content-Type': 'application/json' } };
+  isLogged: boolean | undefined;
 
   constructor(
     private http: HttpClient,
-    private router: Router) { }
+    private router: Router,
+    private _auth: AuthentificationService,
+    private _VarGlob: VarGlobService
+  ) { }
 
   ngOnInit(): void {
 
     this.formData = new FormGroup({
       username: new FormControl(),
-      password: new FormControl()
+      password: new FormControl(),
     });
   }
 
   onSubmit() {
-    console.log(this.formData.value);
-    this.http.post('https://pedago.univ-avignon.fr:3231/login', this.formData.value, this.options).subscribe(response => {
-      this.response = response;
-      console.log(this.response);
-      this.message = this.response.statusMsg
-      if (this.response.status === 200) {
-        this.msgType = "info"
-        this.router.navigate(['/landingPage'], { queryParams: { message: this.message, msgType: this.msgType } });
-      } else {
-        this.msgType = "danger"
+
+    this._auth.VerifyId(this.formData.value.username, this.formData.value.password).subscribe(
+
+      data => {
+        this.isLogged = data;
+        this._VarGlob.isLogged = data; /** boolean retourné par l’observable */
+        if (this.isLogged == true) {
+          this._VarGlob.bandeauMessage = "Connexion réussit ! Bienvenu " + this.formData.value.username + ".";
+          this._VarGlob.bandeauMsgType = 'info';
+          this.router.navigate(['/landingPage'], { queryParams: { message: this.message, msgType: this.msgType } });
+        }
+        else {
+          this._VarGlob.bandeauMessage = "Connexion echouée ! Verifier votre username ou password.";
+          this._VarGlob.bandeauMsgType = 'danger';
+        }
+      },
+      error => {
+        this._VarGlob.bandeauMessage = "Connexion echouée ! " + error;
+        this._VarGlob.bandeauMsgType = 'danger';
       }
-    })
+    );
+
     this.isBandeauVisible = true;
     setTimeout(() => {
       this.isBandeauVisible = false

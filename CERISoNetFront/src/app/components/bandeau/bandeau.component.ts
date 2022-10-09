@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Input } from '@angular/core';
+import { VarGlobService } from 'src/app/services/var-glob.service';
 
 @Component({
   selector: 'app-bandeau',
@@ -8,20 +9,15 @@ import { Input } from '@angular/core';
 })
 export class BandeauComponent implements OnInit {
 
-  @Input()
-  message: string = '';
+  message: string = "";
 
-  @Input()
-  msgType: string = '';
+  msgType: string = "";
 
-  constructor() { }
+  constructor(private _VarGlob: VarGlobService) { }
 
   ngOnInit(): void {
-    console.log("coucou");
-    console.log(this.message);
-    console.log(this.msgType);
-
-
+    this.message = this._VarGlob.bandeauMessage;
+    this.msgType = this._VarGlob.bandeauMsgType;
   }
 
 }
