@@ -9,11 +9,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class LandingPageComponent implements OnInit {
 
-  @Input()
-  message: string | null | undefined;
+  @Input() message: string | null | undefined;
 
-  @Input()
-  msgType: string | null | undefined;
+  @Input() msgType: string | null | undefined;
 
   isBandeauVisible: boolean = false;
 

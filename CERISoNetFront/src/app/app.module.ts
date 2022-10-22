@@ -14,7 +14,8 @@ import { FooterComponent } from './components/layout/footer/footer.component';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
 import { TitleCasePipePipe } from './pipes/title-case-pipe.pipe';
 import { AuthentificationService } from './services/authentification.service'
-import { VarGlobService } from './services/var-glob.service'
+import { VarGlobService } from './services/var-glob.service';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 
 @NgModule({
   declarations: [ /** Déclaration des composants, pipes, directives */
@@ -30,7 +31,8 @@ import { VarGlobService } from './services/var-glob.service'
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgbModule
   ],
   providers: [  /**Déclaration des services utilisables / singleton */
     AuthentificationService,

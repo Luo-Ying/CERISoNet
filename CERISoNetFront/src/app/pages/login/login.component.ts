@@ -42,9 +42,6 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._VarGlob.headerHeading = "login";
-    // console.log(this._VarGlob.headerHeading);
-    console.log("login glob heading: ", this._VarGlob.headerHeading);
     this.formData = new FormGroup({
       username: new FormControl(),
       password: new FormControl(),

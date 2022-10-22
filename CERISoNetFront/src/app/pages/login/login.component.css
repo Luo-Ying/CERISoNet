@@ -1,9 +1,9 @@
 /* template resource: https://bootsnipp.com/snippets/dldxB */
 
-body {
+/* body {
     font-family: "Poppins", sans-serif;
     height: 100vh;
-}
+} */
 
 @media only screen and (max-width:800px) {
 
@@ -81,4 +81,19 @@ input {
     margin: 1%;
     width: 85%;
     border: 2px solid #f6f6f6;
+}
+
+.feature {
+    background: red;
+    padding: 18px;
+}
+
+.feature-inner {
+    margin: auto;
+    width: 970px;
+}
+
+.feature-inner h1 {
+    color: #f8dbdb;
+    font-size: 30px;
 }

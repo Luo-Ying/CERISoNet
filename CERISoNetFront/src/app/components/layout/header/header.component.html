@@ -4,23 +4,53 @@
     <div id="logo">
         <h1><a href="#">CERI<span>soNet</span></a></h1>
     </div>
-    <div id="top-nav">
-        <ul>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Contact</a></li>
-            <li><a href="#">FAQ</a></li>
-            <li><a href="/login">Login</a></li>
-        </ul>
+    <div id="top-nav-normal">
+        <div id="top-nav">
+            <ul>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">FAQ</a></li>
+                <li><a href="/login">Login</a></li>
+            </ul>
+        </div>
     </div>
     <div class="clr"></div>
-</div>
-
-<div class="feature">
-    <div class="feature-inner">
-        <h1>{{heading | titleCasePipe}}</h1>
+    <div class="tel">
+        <div id="top-nav-tel" class="show-for-small-only">
+            <ngb-accordion [closeOthers]="true" activeIds="static-1">
+                <ngb-panel id="static-1" title="CERIsoNet">
+                    <ng-template ngbPanelContent>
+                        <div id="top-nav">
+                            <ul>
+                                <li><a href="#">About</a></li>
+                                <li><a href="#">Contact</a></li>
+                                <li><a href="#">FAQ</a></li>
+                                <li><a href="/login">Login</a></li>
+                            </ul>
+                        </div>
+                    </ng-template>
+                </ngb-panel>
+            </ngb-accordion>
+        </div>
     </div>
 </div>
-<br />
+
+<!-- <div>
+    <ngb-accordion [closeOthers]="true" activeIds="static-1">
+        <ngb-panel id="static-1" title="">
+            <ng-template ngbPanelContent>
+                <div id="top-nav">
+                    <ul>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="/login">Login</a></li>
+                    </ul>
+                </div>
+            </ng-template>
+        </ngb-panel>
+    </ngb-accordion>
+</div> -->
 
 
 <!-- insertion du composant bandeauComponent -->
