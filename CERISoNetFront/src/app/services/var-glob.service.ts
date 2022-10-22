@@ -5,6 +5,8 @@ import { Injectable } from '@angular/core';
 })
 export class VarGlobService {
 
+  headerHeading: string = "";
+
   isLogged: boolean | undefined;
 
   bandeauMessage: string = "";

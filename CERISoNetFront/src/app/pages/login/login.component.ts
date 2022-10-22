@@ -37,10 +37,14 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private _auth: AuthentificationService,
     private _VarGlob: VarGlobService
-  ) { }
+  ) {
+    // this._VarGlob.heading = "login";
+  }
 
   ngOnInit(): void {
-
+    this._VarGlob.headerHeading = "login";
+    // console.log(this._VarGlob.headerHeading);
+    console.log("login glob heading: ", this._VarGlob.headerHeading);
     this.formData = new FormGroup({
       username: new FormControl(),
       password: new FormControl(),
@@ -57,7 +61,7 @@ export class LoginComponent implements OnInit {
         if (this.isLogged == true) {
           this._VarGlob.bandeauMessage = "Connexion  ! Bienvenu " + this.formData.value.username + ".";
           this._VarGlob.bandeauMsgType = 'info';
-          this.router.navigate(['/landingPage'], { queryParams: { message: this.message, msgType: this.msgType } });
+          this.router.navigate(['/'], { queryParams: { message: this.message, msgType: this.msgType } });
           console.log(localStorage);
           console.log("coucou");
 

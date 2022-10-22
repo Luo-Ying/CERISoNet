@@ -1,0 +1,14 @@
+.feature {
+    background: red;
+    padding: 18px;
+}
+
+.feature-inner {
+    margin: auto;
+    width: 970px;
+}
+
+.feature-inner h1 {
+    color: #f8dbdb;
+    font-size: 32px;
+}
