@@ -55,9 +55,12 @@ export class LoginComponent implements OnInit {
         this.isLogged = data;
         this._VarGlob.isLogged = data; /** boolean retourné par l’observable */
         if (this.isLogged == true) {
-          this._VarGlob.bandeauMessage = "Connexion réussit ! Bienvenu " + this.formData.value.username + ".";
+          this._VarGlob.bandeauMessage = "Connexion  ! Bienvenu " + this.formData.value.username + ".";
           this._VarGlob.bandeauMsgType = 'info';
           this.router.navigate(['/landingPage'], { queryParams: { message: this.message, msgType: this.msgType } });
+          console.log(localStorage);
+          console.log("coucou");
+
         }
         else {
           this._VarGlob.bandeauMessage = "Connexion echouée ! Verifier votre username ou password.";

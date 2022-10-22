@@ -3,13 +3,15 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "node_modules/@angular/cli/bin/ng.js serve --host 127.0.0.1 --port 3232",
+    "start": "node_modules/@angular/cli/bin/ng.js serve --host pedago.univ-avignon.fr --port 3232",
+    "startLocal": "node_modules/@angular/cli/bin/ng.js serve --host 127.0.0.1 --port 3232",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "creatComponent": "node_modules/@angular/cli/bin/ng.js generate component components/{name_component}",
     "creatPipe": "node_modules/@angular/cli/bin/ng.js generate pipe pipes/{name_pipe}",
-    "creatService": "node_modules/@angular/cli/bin/ng.js generate service services/{name_service}"
+    "creatService": "node_modules/@angular/cli/bin/ng.js generate service services/{name_service}",
+    "ssh": "ssh uapv1903453@pedago.univ-avignon.fr"
   },
   "private": true,
   "dependencies": {

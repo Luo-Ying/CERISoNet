@@ -110,7 +110,6 @@ app.post('/login', (req, res) => {
                 }
                 else {
                     responseData.status = 204
-                    // console.log('Connexion échouée : informations de connexion incorrecte');
                     responseData.statusMsg = 'Connexion échouée : informations de connexion incorrecte';
                 }
                 console.log(responseData)

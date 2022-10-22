@@ -32,7 +32,9 @@ export class AuthentificationService {
         this.options).subscribe(
           data => { /** / succes de l’observable httpClient */
             if (data.status == 200) {
-              localStorage.setItem('username', JSON.stringify(data.data.username));
+              const date = new Date();
+              localStorage.setItem('username', data.data);
+              localStorage.setItem('lastLogin', date.toLocaleDateString() + ' ' + date.toLocaleTimeString());
               trueId = true;
             }
             else {
