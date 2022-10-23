@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-// import { AppComponent } from 'src/app/app.component';
+import { AuthentificationService } from 'src/app/services/authentification.service';
 import { VarGlobService } from 'src/app/services/var-glob.service';
 
 @Component({
@@ -9,9 +9,30 @@ import { VarGlobService } from 'src/app/services/var-glob.service';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  isLogged: boolean = false;
+
+  constructor(private _auth: AuthentificationService) {
+    // this.isLogged = this._VarGlob.isLogged;
+    // console.log("coucou", localStorage);
+    this.isLogged = localStorage['id'] ? true : false;
+  }
 
   ngOnInit(): void {
+  }
+
+  disconnect = () => {
+    console.log("coucou");
+    // this._auth.Disconnect().subscribe(
+    //   data => {
+    //     console.log(data);
+
+    //   },
+    //   error => {
+    //     console.log(error);
+
+    //   }
+    // );
+    this._auth.Disconnect();
   }
 
 }

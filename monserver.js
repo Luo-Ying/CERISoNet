@@ -61,9 +61,9 @@ app.get('/', (req, res) => {
     res.send({ "text": "coucou" })
 })
 
-const userConnexion = () => {
+// const userConnexion = () => {
 
-}
+// }
 
 /**Récupérer les infos de compte dans le fichier .env pour connecter db psql */
 const user_dbpsql = process.env.DBPSQL_USER
@@ -71,6 +71,16 @@ const password_dbpsql = process.env.DBPSQL_PASSWORD
 const database_dbpsql = process.env.DBPSQL_DATABASE
 const host_dbpsql = process.env.DBPSQL_HOST
 const port_dbpsql = process.env.DBPSQL_PORT
+
+let pool = new pgClient.Pool({
+    user: user_dbpsql,
+    host: host_dbpsql,
+    database: database_dbpsql,
+    password: password_dbpsql,
+    port: port_dbpsql
+});
+
+let responseData = {}
 
 /**Route '/login' */
 app.post('/login', (req, res) => {
@@ -84,14 +94,14 @@ app.post('/login', (req, res) => {
     const sql_verify = `SELECT * FROM fredouil.users WHERE identifiant='${username}';`
     const sql_changeStatus = `UPDATE fredouil.users SET statut_connexion=1 WHERE identifiant='${username}';`
     /**instance de connexion avec toutes les informations de la BD */
-    let pool = new pgClient.Pool({
-        user: user_dbpsql,
-        host: host_dbpsql,
-        database: database_dbpsql,
-        password: password_dbpsql,
-        port: port_dbpsql
-    });
-    let responseData = {}
+    // let pool = new pgClient.Pool({
+    //     user: user_dbpsql,
+    //     host: host_dbpsql,
+    //     database: database_dbpsql,
+    //     password: password_dbpsql,
+    //     port: port_dbpsql
+    // });
+    // let responseData = {}
     /**
      * Connexion à la base => objet de connexion : client
      * fonctionne également en promesse avec then et catch ! */
@@ -109,6 +119,7 @@ app.post('/login', (req, res) => {
                 /**requête réussie => traitement du résultat stocké dans l’objet result */
                 else if ((result.rows[0] !== null) && (result.rows[0].motpasse === password)) {
                     console.log("coucou");
+                    console.log(result);
                     client.query(sql_changeStatus, (e, rslt) => {
                         if (e) {
                             responseData.statusMsg = 'Une érreur du serveur est produit, veuillez réessayer plus tard.'
@@ -116,7 +127,9 @@ app.post('/login', (req, res) => {
                     })
                     req.session.isConnected = true
                     responseData.status = 200
-                    responseData.data = result.rows[0].nom
+                    responseData.lastName = result.rows[0].nom
+                    responseData.firstName = result.rows[0].prenom
+                    responseData.urlAvatar = result.rows[0].avatar
                     responseData.statusMsg = `connexion réussie : bonjour ${result.rows[0].prenom}`
                 }
                 else {
@@ -124,12 +137,41 @@ app.post('/login', (req, res) => {
                     responseData.status = 204
                     responseData.statusMsg = 'Connexion échouée : informations de connexion incorrecte';
                 }
-                console.log(responseData)
+                // console.log(responseData)
+                console.log(req.session);
                 res.send(responseData)  /** renvoi du résultat (ou des messages d’erreur) */
                 console.log("ok");
             })
             client.release()    /**connexion libérée */
         }
 
+    })
+})
+
+app.get('/disconnect', (req, res) => {
+    const id = req.query.id;
+    const sql_changeStatus = `UPDATE fredouil.users SET statut_connexion=0 WHERE identifiant='${id}';`
+    console.log("coucou1");
+    pool.connect((err, client, done) => {
+        if (err) { console.log(`Error connecting to pg server ${err.stack}`) }
+        else {
+            client.query(sql_changeStatus, (err, result) => {
+                if (err) {
+                    // responseData.status = 204
+                    // console.log('Erreur d\'exécution de la requete' + err.stack)
+                    // responseData.statusMsg = 'Connexion échouée'
+                }
+                else {
+                    req.session.isConnected = false
+                    responseData.status = 200
+                    // responseData.data = result.rows[0].nom
+                    responseData.statusMsg = `déonnexion réussie`
+                }
+                console.log("coucou2");
+                console.log(responseData);
+                res.send(responseData)
+            })
+            client.release()
+        }
     })
 })

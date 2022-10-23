@@ -74,6 +74,7 @@ export class LoginComponent implements OnInit {
       }
     );
 
+
     this.isBandeauVisible = true;
     setTimeout(() => {
       this.isBandeauVisible = false

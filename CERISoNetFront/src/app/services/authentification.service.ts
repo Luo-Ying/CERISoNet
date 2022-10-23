@@ -33,7 +33,14 @@ export class AuthentificationService {
           data => { /** / succes de l’observable httpClient */
             if (data.status == 200) {
               const date = new Date();
-              localStorage.setItem('username', data.data);
+              console.log(data);
+              console.log(username);
+
+              // localStorage.setItem('accessToken', data);
+              localStorage.setItem('id', username);
+              localStorage.setItem('lastName', data.lastName);
+              localStorage.setItem('firsteName', data.firstName);
+              localStorage.setItem('urlAvatar', data.urlAvatar);
               localStorage.setItem('lastLogin', date.toLocaleDateString() + ' ' + date.toLocaleTimeString());
               trueId = true;
             }
@@ -50,6 +57,22 @@ export class AuthentificationService {
           }
         );
     });
+  }
+
+  Disconnect = () => {
+    console.log("nique ta mère");
+    this._http.get<any>(
+      `https://pedago.univ-avignon.fr:3231/disconnect?id=${localStorage.getItem('id')}`
+    ).subscribe(
+      data => {
+        console.log(data);
+
+        localStorage.clear();
+      },
+      error => {
+        console.error('une erreur est survenu!', error);
+      },
+    )
   }
 
 }
