@@ -9,27 +9,19 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class LandingPageComponent implements OnInit {
 
-  @Input() message: string | null | undefined;
+  // @Input() message: string = '';
 
-  @Input() msgType: string | null | undefined;
-
-  isBandeauVisible: boolean = false;
+  // @Input() msgType: string = '';
 
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {
 
-    this.route.queryParams.subscribe(param => {
-      this.message = param['message'];
-      this.msgType = param['msgType'];
-    })
+    // this.route.queryParams.subscribe(param => {
+    //   this.message = param['message'];
+    //   this.msgType = param['msgType'];
+    // })
 
-    setTimeout(() => {
-      this.isBandeauVisible = true;
-    }, 100);
-    setTimeout(() => {
-      this.isBandeauVisible = false
-    }, 5000);
   }
 
 }

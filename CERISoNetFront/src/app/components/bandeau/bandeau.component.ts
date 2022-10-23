@@ -13,11 +13,20 @@ export class BandeauComponent implements OnInit {
 
   msgType: string = "";
 
+  isBandeauVisible: boolean = false;
+
   constructor(private _VarGlob: VarGlobService) { }
 
   ngOnInit(): void {
     this.message = this._VarGlob.bandeauMessage;
     this.msgType = this._VarGlob.bandeauMsgType;
+
+    setTimeout(() => {
+      this.isBandeauVisible = true;
+    }, 100);
+    setTimeout(() => {
+      this.isBandeauVisible = false
+    }, 5000);
   }
 
 }

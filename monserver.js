@@ -61,6 +61,10 @@ app.get('/', (req, res) => {
     res.send({ "text": "coucou" })
 })
 
+const userConnexion = () => {
+
+}
+
 /**Récupérer les infos de compte dans le fichier .env pour connecter db psql */
 const user_dbpsql = process.env.DBPSQL_USER
 const password_dbpsql = process.env.DBPSQL_PASSWORD
@@ -77,7 +81,8 @@ app.post('/login', (req, res) => {
     shacode.update(req.body.password)
     const password = shacode.digest('hex')
     /**vérification des informations de login auprès de la base postgresql */
-    const sql = `SELECT * FROM fredouil.users where identifiant='${username}';`
+    const sql_verify = `SELECT * FROM fredouil.users WHERE identifiant='${username}';`
+    const sql_changeStatus = `UPDATE fredouil.users SET statut_connexion=1 WHERE identifiant='${username}';`
     /**instance de connexion avec toutes les informations de la BD */
     let pool = new pgClient.Pool({
         user: user_dbpsql,
@@ -95,7 +100,7 @@ app.post('/login', (req, res) => {
         else {
             console.log('Connection established with pg db server')
             /**Exécution de la requête SQL et traitement du résultat */
-            client.query(sql, (err, result) => {
+            client.query(sql_verify, (err, result) => {
                 if (err) {
                     responseData.status = 204
                     console.log('Erreur d\'exécution de la requete' + err.stack)
@@ -103,12 +108,19 @@ app.post('/login', (req, res) => {
                 }
                 /**requête réussie => traitement du résultat stocké dans l’objet result */
                 else if ((result.rows[0] !== null) && (result.rows[0].motpasse === password)) {
+                    console.log("coucou");
+                    client.query(sql_changeStatus, (e, rslt) => {
+                        if (e) {
+                            responseData.statusMsg = 'Une érreur du serveur est produit, veuillez réessayer plus tard.'
+                        }
+                    })
                     req.session.isConnected = true
                     responseData.status = 200
                     responseData.data = result.rows[0].nom
                     responseData.statusMsg = `connexion réussie : bonjour ${result.rows[0].prenom}`
                 }
                 else {
+                    // console.log(result);
                     responseData.status = 204
                     responseData.statusMsg = 'Connexion échouée : informations de connexion incorrecte';
                 }

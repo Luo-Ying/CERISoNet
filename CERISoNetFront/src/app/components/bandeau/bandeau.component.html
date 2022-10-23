@@ -1,5 +1,6 @@
 <!-- fichier component.bandeau.html -->
-<div class="bandeau">
+<br>
+<div class="bandeau" *ngIf="this.isBandeauVisible == true">
   <div *ngIf="this.msgType == 'danger'">
     <p class="alert alert-danger">{{message | titleCasePipe}}</p>
   </div>

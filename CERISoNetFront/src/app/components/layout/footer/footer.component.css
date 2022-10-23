@@ -1,0 +1,47 @@
+#footerblurb {
+    background: #f8dbdb;
+    color: red;
+}
+
+#footerblurb-inner {
+    margin: 0 auto;
+    width: 922px;
+    padding: 24px;
+}
+
+#footerblurb .column {
+    margin: 0;
+    text-align: justify;
+    float: left;
+    width: 250px;
+    padding: 0 24px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: darkred;
+}
+
+.clr {
+    clear: both;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    font-size: 0px;
+    line-height: 0px;
+}
+
+#footer {
+    background: #fff;
+}
+
+#footer-inner {
+    margin: auto;
+    text-align: center;
+    padding: 2%;
+    width: 50%;
+}
+
+#footer a {
+    color: red;
+    text-decoration: none;
+}

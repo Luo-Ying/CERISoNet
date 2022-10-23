@@ -15,7 +15,7 @@ import { LandingPageComponent } from './pages/landing-page/landing-page.componen
 import { TitleCasePipePipe } from './pipes/title-case-pipe.pipe';
 import { AuthentificationService } from './services/authentification.service'
 import { VarGlobService } from './services/var-glob.service';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [ /** Déclaration des composants, pipes, directives */
@@ -25,14 +25,14 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
     HeaderComponent,
     FooterComponent,
     LandingPageComponent,
-    TitleCasePipePipe
+    TitleCasePipePipe,
   ],
   imports: [  /** Déclaration des modules utilisables */
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
-    NgbModule
+    NgbModule,
   ],
   providers: [  /**Déclaration des services utilisables / singleton */
     AuthentificationService,
