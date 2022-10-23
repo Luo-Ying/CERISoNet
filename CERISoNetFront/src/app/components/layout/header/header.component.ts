@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthentificationService } from 'src/app/services/authentification.service';
 import { VarGlobService } from 'src/app/services/var-glob.service';
 
@@ -11,28 +12,40 @@ export class HeaderComponent implements OnInit {
 
   isLogged: boolean = false;
 
-  constructor(private _auth: AuthentificationService) {
-    // this.isLogged = this._VarGlob.isLogged;
-    // console.log("coucou", localStorage);
+  message: string = '';
+  msgType: string = '';
+
+  constructor(
+    private _auth: AuthentificationService,
+    private router: Router,
+    private _VarGlob: VarGlobService
+  ) {
     this.isLogged = localStorage['id'] ? true : false;
   }
 
   ngOnInit(): void {
   }
 
+  // connect = () => {
+  //   // this.router.navigate(['/login'], {});
+  // }
+
   disconnect = () => {
-    console.log("coucou");
-    // this._auth.Disconnect().subscribe(
-    //   data => {
-    //     console.log(data);
+    this._auth.Disconnect().subscribe(
+      data => {
+        // console.log("putin");
+        this.message = "Utilisateur déconnecte!";
+        this.msgType = 'warning';
+        this._VarGlob.bandeauMessage = "Utilisateur déconnecte!";
+        this._VarGlob.bandeauMsgType = 'warning';
+        this.isLogged = false;
+        // location.reload();
+        this.router.navigate(['/'], {});
+      },
+      error => {
 
-    //   },
-    //   error => {
-    //     console.log(error);
-
-    //   }
-    // );
-    this._auth.Disconnect();
+      }
+    );
   }
 
 }

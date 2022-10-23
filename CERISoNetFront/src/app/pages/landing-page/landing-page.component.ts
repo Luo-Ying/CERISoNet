@@ -13,14 +13,21 @@ export class LandingPageComponent implements OnInit {
 
   // @Input() msgType: string = '';
 
+  isBandeauVisible: boolean = false;
+
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {
 
-    // this.route.queryParams.subscribe(param => {
-    //   this.message = param['message'];
-    //   this.msgType = param['msgType'];
-    // })
+    this.route.queryParams.subscribe(param => {
+      // this.message = param['message'];
+      // this.msgType = param['msgType'];
+      if (param['isBandeauVisible']) {
+        // console.log(param['isBandeauVisible']);
+
+        this.isBandeauVisible = param['isBandeauVisible']
+      }
+    })
 
   }
 

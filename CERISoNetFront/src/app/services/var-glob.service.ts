@@ -12,4 +12,8 @@ export class VarGlobService {
   bandeauMsgType: string = "";
 
   constructor() { }
+
+  getIsLogged(): boolean {
+    return this.isLogged;
+  }
 }

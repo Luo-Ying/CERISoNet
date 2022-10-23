@@ -157,7 +157,7 @@ app.get('/disconnect', (req, res) => {
         else {
             client.query(sql_changeStatus, (err, result) => {
                 if (err) {
-                    // responseData.status = 204
+                    responseData.status = 204
                     // console.log('Erreur d\'exécution de la requete' + err.stack)
                     // responseData.statusMsg = 'Connexion échouée'
                 }

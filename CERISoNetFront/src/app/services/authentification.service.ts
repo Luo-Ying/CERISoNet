@@ -59,20 +59,34 @@ export class AuthentificationService {
     });
   }
 
-  Disconnect = () => {
-    console.log("nique ta mère");
-    this._http.get<any>(
-      `https://pedago.univ-avignon.fr:3231/disconnect?id=${localStorage.getItem('id')}`
-    ).subscribe(
-      data => {
-        console.log(data);
+  Disconnect(): Observable<boolean> {
+    let pass: boolean = false;
 
-        localStorage.clear();
-      },
-      error => {
-        console.error('une erreur est survenu!', error);
-      },
-    )
+    return Observable.create((observer: Subscriber<boolean>) => {
+      console.log("nique ta mère");
+      this._http.get<any>(
+        `https://pedago.univ-avignon.fr:3231/disconnect?id=${localStorage.getItem('id')}`
+      ).subscribe(
+        data => {
+          if (data.status == 200) {
+            console.log(data);
+
+            localStorage.clear();
+            pass = true;
+          }
+          else {
+            pass = false
+          }
+        },
+        error => {
+          console.error('une erreur est survenu!', error);
+        },
+        () => { /** terminaison de l’observable httpClient */
+          observer.next(pass);  /** renvoi des données pour l’observable principal */
+        }
+      )
+    });
+
   }
 
 }
