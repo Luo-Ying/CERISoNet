@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
   message: string = '';
   msgType: string = '';
 
-  isBandeauVisible: boolean = false;
+  // isBandeauVisible: boolean = false;
 
   formData!: FormGroup;
 
@@ -77,10 +77,10 @@ export class LoginComponent implements OnInit {
     );
 
 
-    this.isBandeauVisible = true;
-    setTimeout(() => {
-      this.isBandeauVisible = false
-    }, 5000);
+    // this.isBandeauVisible = true;
+    // setTimeout(() => {
+    //   this.isBandeauVisible = false
+    // }, 5000);
   }
 
 }

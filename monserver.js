@@ -72,6 +72,7 @@ const database_dbpsql = process.env.DBPSQL_DATABASE
 const host_dbpsql = process.env.DBPSQL_HOST
 const port_dbpsql = process.env.DBPSQL_PORT
 
+/**instance de connexion avec toutes les informations de la BD */
 let pool = new pgClient.Pool({
     user: user_dbpsql,
     host: host_dbpsql,
@@ -119,7 +120,7 @@ app.post('/login', (req, res) => {
                 /**requête réussie => traitement du résultat stocké dans l’objet result */
                 else if ((result.rows[0] !== null) && (result.rows[0].motpasse === password)) {
                     console.log("coucou");
-                    console.log(result);
+                    // console.log(result);
                     client.query(sql_changeStatus, (e, rslt) => {
                         if (e) {
                             responseData.statusMsg = 'Une érreur du serveur est produit, veuillez réessayer plus tard.'
@@ -138,7 +139,7 @@ app.post('/login', (req, res) => {
                     responseData.statusMsg = 'Connexion échouée : informations de connexion incorrecte';
                 }
                 // console.log(responseData)
-                console.log(req.session);
+                // console.log(req.session);
                 res.send(responseData)  /** renvoi du résultat (ou des messages d’erreur) */
                 console.log("ok");
             })

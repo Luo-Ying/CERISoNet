@@ -19,12 +19,18 @@ export class LandingPageComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private _auth: AuthentificationService,
     private _VarGlob: VarGlobService
   ) { }
 
   ngOnInit(): void {
 
+    if (!localStorage.getItem('id')) {
+      this._VarGlob.bandeauMessage = "Connectez vous pour accéder au site !";
+      this._VarGlob.bandeauMsgType = 'warning';
+      this.router.navigate(['/login'], {});
+    }
     // this.route.queryParams.subscribe(param => {
     //   // this.message = param['message'];
     //   // this.msgType = param['msgType'];
