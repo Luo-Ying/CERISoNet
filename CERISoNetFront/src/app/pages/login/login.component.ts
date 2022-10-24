@@ -4,6 +4,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthentificationService } from 'src/app/services/authentification.service';
 import { VarGlobService } from 'src/app/services/var-glob.service';
+import { HeaderComponent } from 'src/app/components/layout/header/header.component';
 
 
 interface Response {
@@ -36,7 +37,7 @@ export class LoginComponent implements OnInit {
     private http: HttpClient,
     private router: Router,
     private _auth: AuthentificationService,
-    private _VarGlob: VarGlobService
+    private _VarGlob: VarGlobService,
   ) {
     // this._VarGlob.heading = "login";
   }
