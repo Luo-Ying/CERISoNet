@@ -27,7 +27,10 @@
                                 <li><a href="#">About</a></li>
                                 <li><a href="#">Contact</a></li>
                                 <li><a href="#">FAQ</a></li>
-                                <li><a href="/login">Login</a></li>
+                                <!-- <li><a href="/login">Login</a></li> -->
+                                <li *ngIf="this.isLogged == false"><a href="/login">Sign in</a></li>
+                                <li *ngIf="this.isLogged == true"><a role="button" (click)="disconnect()">Disconnect</a>
+                                </li>
                             </ul>
                         </div>
                     </ng-template>

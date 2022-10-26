@@ -1,6 +1,17 @@
 
+@media only screen and (max-width:800px) {
+    .bandeau {
+        width: 50%;
+    }
+}
+
+@media only screen and (min-width:800px) {
+    .bandeau {
+        width: 25%;
+    }
+}
+
 .bandeau {
-    width: 25%;
     text-align: center;
     margin-left: auto;
     margin-right: auto;
