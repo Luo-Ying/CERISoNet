@@ -40,7 +40,7 @@ export class HeaderComponent implements OnInit {
         this._VarGlob.bandeauMsgType = 'warning';
         this.isLogged = false;
         // location.reload();
-        this.router.navigate(['/'], {});
+        this.router.navigate(['/login'], {});
       },
       error => {
 

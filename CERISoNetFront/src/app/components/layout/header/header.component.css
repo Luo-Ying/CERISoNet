@@ -6,7 +6,7 @@
     }
 
     #logo h1 a, h1 a:hover {
-        color: darkred;
+        color: rgb(174, 118, 0);
         text-decoration: none;
     }
 
@@ -26,7 +26,7 @@
         display: block;
         margin: 0;
         padding: 8px;
-        color: red;
+        color: rgb(209, 139, 0);
         text-decoration: none;
     }
 
@@ -52,12 +52,12 @@
     }
     
     #logo h1 a, h1 a:hover {
-        color: darkred;
+        color: rgb(174, 118, 0);
         text-decoration: none;
     }
     
     #logo h1 span {
-        color: #f8dbdb;
+        color: rgb(255, 222, 155);
     }
     
     #top-nav {
@@ -84,7 +84,7 @@
         display: block;
         margin: 0;
         padding: 8px 20px;
-        color: red;
+        color: rgb(209, 139, 0);
         text-decoration: none;
     }
     

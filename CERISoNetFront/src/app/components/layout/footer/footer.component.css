@@ -1,6 +1,6 @@
 #footerblurb {
     background: #f8dbdb;
-    color: red;
+    color: rgb(209, 139, 0);
 }
 
 #footerblurb-inner {
@@ -18,7 +18,7 @@
 }
 
 h1, h2, h3, h4, h5, h6 {
-    color: darkred;
+    color: rgb(174, 118, 0);
 }
 
 .clr {
@@ -42,6 +42,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #footer a {
-    color: red;
+    color: rgb(209, 139, 0);
     text-decoration: none;
 }
