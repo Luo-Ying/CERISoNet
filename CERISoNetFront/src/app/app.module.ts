@@ -2,8 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-
-// import Authen
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,9 +12,9 @@ import { HeaderComponent } from './components/layout/header/header.component';
 import { FooterComponent } from './components/layout/footer/footer.component';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
 import { TitleCasePipePipe } from './pipes/title-case-pipe.pipe';
-import { AuthentificationService } from './services/authentification.service'
+import { DatabaseService } from './services/database.service';
+import { AuthentificationService } from './services/authentification.service';
 import { VarGlobService } from './services/var-glob.service';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [ /** Déclaration des composants, pipes, directives */
@@ -35,6 +34,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     NgbModule,
   ],
   providers: [  /**Déclaration des services utilisables / singleton */
+    DatabaseService,
     AuthentificationService,
     VarGlobService
   ],

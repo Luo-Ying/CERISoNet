@@ -4,7 +4,11 @@ require('dotenv').config()
 /**définit le middleware permettant de parser les données envoyées par la méthode post */
 const express = require('express')
 const path = require('path')
-const pgClient = require('pg')
+const pgClient = require('pg') /**définit le middleware pg à charger */
+const MongoClient = require('mongodb').MongoClient  /**définit le middleware mongodb à charger et crée l’instance MongoClient */
+
+console.log(("b" + "a" + +"123154418a" + "a").toLocaleLowerCase())
+console.log(+"a")
 
 const bodyParser = require('body-parser')
 const https = require('https')
@@ -61,25 +65,25 @@ app.get('/', (req, res) => {
     res.send({ "text": "coucou" })
 })
 
-// const userConnexion = () => {
-
-// }
-
-/**Récupérer les infos de compte dans le fichier .env pour connecter db psql */
+/**Récupérer les valeur des paramètres obligés pour connecter les BDs */
 const user_dbpsql = process.env.DBPSQL_USER
 const password_dbpsql = process.env.DBPSQL_PASSWORD
 const database_dbpsql = process.env.DBPSQL_DATABASE
 const host_dbpsql = process.env.DBPSQL_HOST
 const port_dbpsql = process.env.DBPSQL_PORT
+const dsn_dbmongo = process.env.DSN_MONGODB
 
 /**instance de connexion avec toutes les informations de la BD */
-let pool = new pgClient.Pool({
+let pgClientPool = new pgClient.Pool({
     user: user_dbpsql,
     host: host_dbpsql,
     database: database_dbpsql,
     password: password_dbpsql,
     port: port_dbpsql
 });
+
+/**spécification du Data Source Name (DSN) de mongoDB => BD://host:port/db */
+// const dsnMongoDB = dsn_dbmongo
 
 let responseData = {}
 
@@ -94,19 +98,10 @@ app.post('/login', (req, res) => {
     /**vérification des informations de login auprès de la base postgresql */
     const sql_verify = `SELECT * FROM fredouil.users WHERE identifiant='${username}';`
     const sql_changeStatus = `UPDATE fredouil.users SET statut_connexion=1 WHERE identifiant='${username}';`
-    /**instance de connexion avec toutes les informations de la BD */
-    // let pool = new pgClient.Pool({
-    //     user: user_dbpsql,
-    //     host: host_dbpsql,
-    //     database: database_dbpsql,
-    //     password: password_dbpsql,
-    //     port: port_dbpsql
-    // });
-    // let responseData = {}
     /**
      * Connexion à la base => objet de connexion : client
      * fonctionne également en promesse avec then et catch ! */
-    pool.connect((err, client, done) => {
+    pgClientPool.connect((err, client, done) => {
         if (err) { console.log(`Error connecting to pg server ${err.stack}`) }
         else {
             console.log('Connection established with pg db server')
@@ -134,12 +129,9 @@ app.post('/login', (req, res) => {
                     responseData.statusMsg = `connexion réussie : bonjour ${result.rows[0].prenom}`
                 }
                 else {
-                    // console.log(result);
                     responseData.status = 204
                     responseData.statusMsg = 'Connexion échouée : informations de connexion incorrecte';
                 }
-                // console.log(responseData)
-                // console.log(req.session);
                 res.send(responseData)  /** renvoi du résultat (ou des messages d’erreur) */
                 console.log("ok");
             })
@@ -153,7 +145,7 @@ app.get('/disconnect', (req, res) => {
     const id = req.query.id;
     const sql_changeStatus = `UPDATE fredouil.users SET statut_connexion=0 WHERE identifiant='${id}';`
     console.log("coucou1");
-    pool.connect((err, client, done) => {
+    pgClientPool.connect((err, client, done) => {
         if (err) { console.log(`Error connecting to pg server ${err.stack}`) }
         else {
             client.query(sql_changeStatus, (err, result) => {
@@ -165,14 +157,37 @@ app.get('/disconnect', (req, res) => {
                 else {
                     req.session.isConnected = false
                     responseData.status = 200
-                    // responseData.data = result.rows[0].nom
                     responseData.statusMsg = `déonnexion réussie`
                 }
-                console.log("coucou2");
-                console.log(responseData);
+                // console.log("coucou2");
+                // console.log(responseData);
                 res.send(responseData)
             })
             client.release()
+        }
+    })
+})
+
+app.get('/db-CERI/CERISoNet', (req, res) => {
+    // console.log(req);
+    /**Connexion MongoDB */
+    MongoClient.connect(dsn_dbmongo, { useNewUrlParser: true, useUnifiedTopology: true }, (err, mongoClient) => {
+        if (err) {
+            return console.log('erreur connexion base de données');
+        }
+        if (mongoClient) {
+            /**Exécution des requêtes - findAll*/
+            mongoClient.db().collection('CERISoNet').find().project({}).toArray((err, data) => {
+                if (err) {
+                    return console.log('erreur base de données')
+                }
+                if (data) {
+                    // console.log("toto");
+                    console.log('requste ok')
+                    mongoClient.close() /**Fermeture de la connexion */
+                    res.send(data) /**renvoi du résultat comme réponse de la requête */
+                }
+            })
         }
     })
 })

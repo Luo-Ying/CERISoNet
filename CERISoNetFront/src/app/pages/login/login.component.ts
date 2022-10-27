@@ -57,12 +57,10 @@ export class LoginComponent implements OnInit {
         this.isLogged = data;
         this._VarGlob.isLogged = data; /** boolean retourné par l’observable */
         if (this.isLogged == true) {
-          // location.reload();
           this._VarGlob.bandeauMessage = "Connexion  ! Bienvenu " + this.formData.value.username + ".";
           this._VarGlob.bandeauMsgType = 'info';
           this.router.navigate(['/'], {});
           console.log(localStorage);
-          console.log("coucou");
 
         }
         else {
@@ -76,11 +74,6 @@ export class LoginComponent implements OnInit {
       }
     );
 
-
-    // this.isBandeauVisible = true;
-    // setTimeout(() => {
-    //   this.isBandeauVisible = false
-    // }, 5000);
   }
 
 }

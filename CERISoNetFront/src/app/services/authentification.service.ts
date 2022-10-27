@@ -63,7 +63,6 @@ export class AuthentificationService {
     let pass: boolean = false;
 
     return Observable.create((observer: Subscriber<boolean>) => {
-      console.log("nique ta mère");
       this._http.get<any>(
         `https://pedago.univ-avignon.fr:3231/disconnect?id=${localStorage.getItem('id')}`
       ).subscribe(
