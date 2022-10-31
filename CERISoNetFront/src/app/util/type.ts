@@ -22,3 +22,11 @@ export interface post {
     images: image;
     likes: 5;
 }
+
+export interface author {
+    avatar: string;
+    identifiant: string;
+    nom: string;
+    prenom: string;
+    status_connexion: number;
+}

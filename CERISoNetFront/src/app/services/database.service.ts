@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { observable, Observable, Subscribable, Subscriber } from 'rxjs';
 
-import { comment, image, post } from 'src/app/util/type';
+import { post, author } from 'src/app/util/type';
 
 @Injectable({
   providedIn: 'root'
@@ -32,6 +32,28 @@ export class DatabaseService {
         }
       )
     })
+  }
+
+  GetInfosUserById(id_author: number): Observable<boolean> {
+    let author: author;
+
+    return Observable.create((observer: Subscriber<author>) => {
+      this._http.get<any>(
+        `https://pedago.univ-avignon.fr:3231/CERISoNet/comments/user?id=${id_author}`
+      ).subscribe(
+        data => {
+          // console.log(data);
+          author = data;
+        },
+        error => {
+          console.error('une erreur est survenu!', error);
+        },
+        () => { /** terminaison de l’observable httpClient */
+          observer.next(author);  /** renvoi des données pour l’observable principal */
+        }
+      )
+    });
+
   }
 
 }

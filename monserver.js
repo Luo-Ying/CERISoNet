@@ -142,9 +142,10 @@ app.post('/login', (req, res) => {
 })
 
 app.get('/disconnect', (req, res) => {
-    const id = req.query.id;
+    const id = req.query.id
     const sql_changeStatus = `UPDATE fredouil.users SET statut_connexion=0 WHERE identifiant='${id}';`
     console.log("coucou1");
+    console.log(id);
     pgClientPool.connect((err, client, done) => {
         if (err) { console.log(`Error connecting to pg server ${err.stack}`) }
         else {
@@ -183,11 +184,38 @@ app.get('/db-CERI/CERISoNet', (req, res) => {
                 }
                 if (data) {
                     // console.log("toto");
-                    console.log('requste ok')
+                    // console.log('requste ok')
                     mongoClient.close() /**Fermeture de la connexion */
                     res.send(data) /**renvoi du résultat comme réponse de la requête */
                 }
             })
+        }
+    })
+})
+
+app.get('/CERISoNet/comments/user', (req, res) => {
+    const id = req.query.id
+    console.log("created by: ", id);
+    const sql = `SELECT * FROM fredouil.users WHERE id='${id}';`
+    pgClientPool.connect((err, client, done) => {
+        if (err) { console.log(`Error connecting to pg server ${err.stack}`) }
+        else {
+            client.query(sql, (err, result) => {
+                if (err) {
+                    responseData.status = 204
+                }
+                else {
+                    responseData.status = 200
+                    responseData.identifiant = result.rows[0].identifiant
+                    responseData.nom = result.rows[0].nom
+                    responseData.prenom = result.rows[0].prenom
+                    responseData.avatar = result.rows[0].avatar
+                    responseData.status_connexion = result.rows[0].statut_connexion
+                    console.log(result.rows[0]);
+                }
+                res.send(responseData)
+            })
+            client.release()
         }
     })
 })

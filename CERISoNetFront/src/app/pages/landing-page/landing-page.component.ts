@@ -24,14 +24,14 @@ export class LandingPageComponent implements OnInit {
     private router: Router,
     private _auth: AuthentificationService,
     private _VarGlob: VarGlobService,
-    private _dbMongo: DatabaseService
+    private _database: DatabaseService
   ) { }
 
   ngOnInit(): void {
 
     if (localStorage.getItem('id')) {
 
-      this._dbMongo.GetAllComments().subscribe(
+      this._database.GetAllComments().subscribe(
         data => {
           // console.log(data);
           // console.log(data.length);
@@ -52,6 +52,7 @@ export class LandingPageComponent implements OnInit {
 
         }
       )
+
     }
     else {
       this._VarGlob.bandeauMessage = "Connectez vous pour accéder au site !";
