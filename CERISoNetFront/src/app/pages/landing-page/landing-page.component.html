@@ -11,5 +11,27 @@
 
 <app-bandeau></app-bandeau>
 
-LandingPage
+<div class="block-comment">
+
+    <div>
+        <!-- <table>
+            <tr *ngFor="let item of this.commentsArray | slice: (page-1) * pageSize : this.page * this.pageSize"> -->
+        <!-- content here -->
+        <app-post *ngFor="let item of this.commentsArray | slice: (page-1) * pageSize : this.page * this.pageSize"
+            [post]='item'></app-post>
+        <!-- </tr>
+        </table> -->
+    </div>
+
+    <div class="justify-content-rigth">
+        <ngb-pagination [(page)]="this.page" [pageSize]="this.pageSize" [collectionSize]="this.commentsArray.length">
+        </ngb-pagination>
+    </div>
+</div>
+
+<!-- <div *ngFor="let comment of this.commentsArray"> -->
+<!-- <app-post *ngFor="let comment of this.commentsArray" [post]='comment'></app-post> -->
+<!-- </div> -->
+
+<!-- LandingPage -->
 <br />

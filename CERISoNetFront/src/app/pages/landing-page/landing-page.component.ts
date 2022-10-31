@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+
 import { AuthentificationService } from 'src/app/services/authentification.service';
 import { DatabaseService } from 'src/app/services/database.service';
 import { VarGlobService } from 'src/app/services/var-glob.service';
+import { comment, post } from 'src/app/util/type';
 
 @Component({
   selector: 'app-landing-page',
@@ -12,11 +14,10 @@ import { VarGlobService } from 'src/app/services/var-glob.service';
 })
 export class LandingPageComponent implements OnInit {
 
-  // @Input() message: string = '';
+  commentsArray: Array<post> = [];
 
-  // @Input() msgType: string = '';
-
-  // isBandeauVisible: boolean = false;
+  page: number = 1;
+  pageSize: number = 1;
 
   constructor(
     private route: ActivatedRoute,
@@ -29,9 +30,21 @@ export class LandingPageComponent implements OnInit {
   ngOnInit(): void {
 
     if (localStorage.getItem('id')) {
+
       this._dbMongo.GetAllComments().subscribe(
         data => {
-          console.log(data);
+          // console.log(data);
+          // console.log(data.length);
+          data.forEach(element => {
+            // console.log(element);
+            // const allComments: Array<comment> = [];
+            // element.comments.forEach(element => {
+            //   allComments.push(element);
+            // });
+            // console.log(allComments);
+            this.commentsArray.push(element);
+          });
+          // console.log(this.commentsArray);
 
         },
         error => {
@@ -45,15 +58,6 @@ export class LandingPageComponent implements OnInit {
       this._VarGlob.bandeauMsgType = 'warning';
       this.router.navigate(['/login'], {});
     }
-
-    // this.route.queryParams.subscribe(param => {
-    //   // this.message = param['message'];
-    //   // this.msgType = param['msgType'];
-    //   if (param['disconnect']) {
-    //     // console.log(param['isBandeauVisible']);
-    //     this.disconnect();
-    //   }
-    // })
 
   }
 

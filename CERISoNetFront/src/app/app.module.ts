@@ -15,6 +15,7 @@ import { TitleCasePipePipe } from './pipes/title-case-pipe.pipe';
 import { DatabaseService } from './services/database.service';
 import { AuthentificationService } from './services/authentification.service';
 import { VarGlobService } from './services/var-glob.service';
+import { PostComponent } from './components/post/post.component';
 
 @NgModule({
   declarations: [ /** Déclaration des composants, pipes, directives */
@@ -25,6 +26,7 @@ import { VarGlobService } from './services/var-glob.service';
     FooterComponent,
     LandingPageComponent,
     TitleCasePipePipe,
+    PostComponent,
   ],
   imports: [  /** Déclaration des modules utilisables */
     BrowserModule,
