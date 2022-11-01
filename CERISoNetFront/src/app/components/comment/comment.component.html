@@ -1,0 +1,15 @@
+<!-- <p>comment works!</p> -->
+
+<div class="unit-comment">
+    <img src={{this.author?.avatar}} alt="avatar" class="float-left avatar">
+    <div>
+        <span class="color-d1a642">{{ this.author?.identifiant}}</span>
+        : {{ this.comment?.text}}
+    </div>
+    <br>
+    <div class="text-secondary">
+        {{this.comment?.date}}
+        {{ this.comment?.hour}}
+    </div>
+</div>
+<br><br><br>

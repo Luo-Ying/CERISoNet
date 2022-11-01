@@ -34,7 +34,7 @@ export class DatabaseService {
     })
   }
 
-  GetInfosUserById(id_author: number): Observable<boolean> {
+  GetInfosUserById(id_author: number): Observable<author> {
     let author: author;
 
     return Observable.create((observer: Subscriber<author>) => {

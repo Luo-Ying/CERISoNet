@@ -211,7 +211,7 @@ app.get('/CERISoNet/comments/user', (req, res) => {
                     responseData.prenom = result.rows[0].prenom
                     responseData.avatar = result.rows[0].avatar
                     responseData.status_connexion = result.rows[0].statut_connexion
-                    console.log(result.rows[0]);
+                    // console.log(result.rows[0]);
                 }
                 res.send(responseData)
             })

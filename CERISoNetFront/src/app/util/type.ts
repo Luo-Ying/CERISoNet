@@ -1,6 +1,6 @@
 
 export interface comment {
-    idAuthor: number;
+    commentedBy: number;
     date: string;
     hour: string;
     text: string;

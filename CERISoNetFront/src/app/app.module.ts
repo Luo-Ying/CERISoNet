@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,6 +17,8 @@ import { DatabaseService } from './services/database.service';
 import { AuthentificationService } from './services/authentification.service';
 import { VarGlobService } from './services/var-glob.service';
 import { PostComponent } from './components/post/post.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CommentComponent } from './components/comment/comment.component';
 
 @NgModule({
   declarations: [ /** Déclaration des composants, pipes, directives */
@@ -27,6 +30,8 @@ import { PostComponent } from './components/post/post.component';
     LandingPageComponent,
     TitleCasePipePipe,
     PostComponent,
+    CommentComponent,
+    // MatSliderModule,
   ],
   imports: [  /** Déclaration des modules utilisables */
     BrowserModule,
@@ -34,6 +39,8 @@ import { PostComponent } from './components/post/post.component';
     HttpClientModule,
     ReactiveFormsModule,
     NgbModule,
+    BrowserAnimationsModule,
+    MatPaginatorModule,
   ],
   providers: [  /**Déclaration des services utilisables / singleton */
     DatabaseService,

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Input } from '@angular/core';
+// import { Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+// import { PageEvent } from '@angular/material/paginator';
 
 import { AuthentificationService } from 'src/app/services/authentification.service';
 import { DatabaseService } from 'src/app/services/database.service';
@@ -17,7 +18,9 @@ export class LandingPageComponent implements OnInit {
   commentsArray: Array<post> = [];
 
   page: number = 1;
-  pageSize: number = 1;
+  pageSize: number = 3;
+
+  // pageEvent: PageEvent | undefined;
 
   constructor(
     private route: ActivatedRoute,
