@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { DatabaseService } from 'src/app/services/database.service';
+import { VarGlobService } from 'src/app/services/var-glob.service';
 
 import { comment, image, post, author } from 'src/app/util/type';
 
@@ -14,7 +15,13 @@ export class PostComponent implements OnInit {
 
   author: author | undefined;
 
-  constructor(private _database: DatabaseService) { }
+  commentsArray: Array<post> = [];
+
+  hashtags: Array<string> = ["all"];
+
+  constructor(
+    private _database: DatabaseService,
+    private _VarGlob: VarGlobService,) { }
 
   ngOnInit(): void {
 

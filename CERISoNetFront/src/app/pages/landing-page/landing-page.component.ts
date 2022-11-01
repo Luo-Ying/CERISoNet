@@ -17,10 +17,11 @@ export class LandingPageComponent implements OnInit {
 
   commentsArray: Array<post> = [];
 
-  page: number = 1;
-  pageSize: number = 3;
+  hashtags: Array<string> = ["all"];
+  // hashtagsToShow: Array<string> = [];
 
-  // pageEvent: PageEvent | undefined;
+  page: number = 1;
+  pageSize: number = 1;
 
   constructor(
     private route: ActivatedRoute,
@@ -34,27 +35,10 @@ export class LandingPageComponent implements OnInit {
 
     if (localStorage.getItem('id')) {
 
-      this._database.GetAllComments().subscribe(
-        data => {
-          // console.log(data);
-          // console.log(data.length);
-          data.forEach(element => {
-            // console.log(element);
-            // const allComments: Array<comment> = [];
-            // element.comments.forEach(element => {
-            //   allComments.push(element);
-            // });
-            // console.log(allComments);
-            this.commentsArray.push(element);
-          });
-          // console.log(this.commentsArray);
-
-        },
-        error => {
-          console.log(error);
-
-        }
-      )
+      this._VarGlob.getAllComments("");
+      // this.hashtagsToShow = this.hashtags;
+      this.commentsArray = this._VarGlob.commentsArray;
+      this.hashtags = this._VarGlob.hashtags;
 
     }
     else {
@@ -63,6 +47,13 @@ export class LandingPageComponent implements OnInit {
       this.router.navigate(['/login'], {});
     }
 
+  }
+
+  getCommentsByHashtags(value: string): void {
+    console.log(value);
+    this._VarGlob.getAllComments(value);
+    this.commentsArray = this._VarGlob.commentsArray;
+    this.hashtags = this._VarGlob.hashtags;
   }
 
 }

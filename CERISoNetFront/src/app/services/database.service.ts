@@ -13,11 +13,12 @@ export class DatabaseService {
 
   constructor(private _http: HttpClient) { }
 
-  GetAllComments(): Observable<Array<post>> {
+  GetAllComments(hashtag: string): Observable<Array<post>> {
     let result: Array<post>;
+    // let request = 'https://pedago.univ-avignon.fr:3231/db-CERI/CERISoNet';
     return Observable.create((observer: Subscriber<Array<post>>) => {
       this._http.get<any>(
-        'https://pedago.univ-avignon.fr:3231/db-CERI/CERISoNet'
+        `https://pedago.univ-avignon.fr:3231/db-CERI/CERISoNet?hashtag=${hashtag}`
       ).subscribe(
         data => {
           // console.log(data);

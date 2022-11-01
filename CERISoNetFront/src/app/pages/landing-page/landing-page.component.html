@@ -11,7 +11,17 @@
 
 <app-bandeau></app-bandeau>
 
+
 <div class="block-comment">
+
+    <!-- <button (click)="getCommentsByHashtags('all')" value="All" type="button"
+        class="btn btn-secondary hashtag">all</button> -->
+    <button *ngFor="let hashtag of this.hashtags" (click)="getCommentsByHashtags(hashtag)" value={{hashtag}}
+        type="button" class="btn btn-secondary hashtag">{{hashtag}}</button>
+    <!-- <button (click)="getCommentsByHashtags('test')" value="test" type="button"
+        class="btn btn-secondary hashtag">test</button> -->
+
+    <br><br><br>
 
     <div>
         <!-- <table>

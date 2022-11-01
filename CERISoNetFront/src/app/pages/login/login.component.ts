@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
   isLogged: boolean | undefined;
 
   constructor(
-    private http: HttpClient,
+    // private http: HttpClient,
     private router: Router,
     private _auth: AuthentificationService,
     private _VarGlob: VarGlobService,

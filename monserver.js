@@ -170,6 +170,7 @@ app.get('/disconnect', (req, res) => {
 })
 
 app.get('/db-CERI/CERISoNet', (req, res) => {
+    const hashtag = req.query.hashtag;
     // console.log(req);
     /**Connexion MongoDB */
     MongoClient.connect(dsn_dbmongo, { useNewUrlParser: true, useUnifiedTopology: true }, (err, mongoClient) => {
@@ -178,24 +179,39 @@ app.get('/db-CERI/CERISoNet', (req, res) => {
         }
         if (mongoClient) {
             /**Exécution des requêtes - findAll*/
-            mongoClient.db().collection('CERISoNet').find().project({}).toArray((err, data) => {
-                if (err) {
-                    return console.log('erreur base de données')
-                }
-                if (data) {
-                    // console.log("toto");
-                    // console.log('requste ok')
-                    mongoClient.close() /**Fermeture de la connexion */
-                    res.send(data) /**renvoi du résultat comme réponse de la requête */
-                }
-            })
+            if (hashtag != "" && hashtag != "all") {
+                mongoClient.db().collection('CERISoNet').find({ "hashtags": hashtag }).project({}).toArray((err, data) => {
+                    if (err) {
+                        return console.log('erreur base de données')
+                    }
+                    if (data) {
+                        // console.log("toto");
+                        // console.log('requste ok')
+                        mongoClient.close() /**Fermeture de la connexion */
+                        res.send(data) /**renvoi du résultat comme réponse de la requête */
+                    }
+                })
+            }
+            else {
+                mongoClient.db().collection('CERISoNet').find().project({}).toArray((err, data) => {
+                    if (err) {
+                        return console.log('erreur base de données')
+                    }
+                    if (data) {
+                        // console.log("toto");
+                        // console.log('requste ok')
+                        mongoClient.close() /**Fermeture de la connexion */
+                        res.send(data) /**renvoi du résultat comme réponse de la requête */
+                    }
+                })
+            }
         }
     })
 })
 
 app.get('/CERISoNet/comments/user', (req, res) => {
     const id = req.query.id
-    console.log("created by: ", id);
+    // console.log("created by: ", id);
     const sql = `SELECT * FROM fredouil.users WHERE id='${id}';`
     pgClientPool.connect((err, client, done) => {
         if (err) { console.log(`Error connecting to pg server ${err.stack}`) }
