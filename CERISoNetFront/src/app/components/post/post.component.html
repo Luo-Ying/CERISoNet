@@ -16,7 +16,10 @@
             {{this.post?.body}}
             <b *ngFor="let item of this.post?.hashtags" class="text-primary hashtag"> {{ item }} </b>
             <br><br><br>
-            <p><img src={{this.post?.images?.url}} alt="img" class="image"></p>
+            <p *ngIf="this.post?.images"><img src={{this.post?.images?.url}} alt="img" class="image"></p>
+            <p *ngIf="!this.post?.images"><img
+                    src="https://aeroclub-issoire.fr/wp-content/uploads/2020/05/image-not-found.jpg" alt="img"
+                    class="image"></p>
         </div>
         <br>
         <div class="group-icon-comment">

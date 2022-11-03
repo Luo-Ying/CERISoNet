@@ -108,6 +108,7 @@ app.post('/login', (req, res) => {
             /**Exécution de la requête SQL et traitement du résultat */
             client.query(sql_verify, (err, result) => {
                 if (err) {
+                    console.log("erreur!!");
                     responseData.status = 204
                     console.log('Erreur d\'exécution de la requete' + err.stack)
                     responseData.statusMsg = 'Connexion échouée'
@@ -129,6 +130,7 @@ app.post('/login', (req, res) => {
                     responseData.statusMsg = `connexion réussie : bonjour ${result.rows[0].prenom}`
                 }
                 else {
+                    console.log("mot de pass erreur!!!");
                     responseData.status = 204
                     responseData.statusMsg = 'Connexion échouée : informations de connexion incorrecte';
                 }
@@ -170,6 +172,86 @@ app.get('/disconnect', (req, res) => {
 })
 
 app.get('/db-CERI/CERISoNet', (req, res) => {
+    const hashtag = decodeURI(req.query.hashtag);
+    console.log(req.query);
+    /**Connexion MongoDB */
+    MongoClient.connect(dsn_dbmongo, { useNewUrlParser: true, useUnifiedTopology: true }, (err, mongoClient) => {
+        if (err) {
+            return console.log('erreur connexion base de données');
+        }
+        if (mongoClient) {
+            /**Exécution des requêtes - findAll*/
+            if (hashtag != "all") {
+                mongoClient.db().collection('CERISoNet').find({ "hashtags": hashtag }).project({}).toArray((err, data) => {
+                    if (err) {
+                        return console.log('erreur base de données')
+                    }
+                    if (data) {
+                        // console.log("toto");
+                        // console.log('requste ok')
+                        console.log(hashtag);
+                        console.log(data);
+                        mongoClient.close() /**Fermeture de la connexion */
+                        res.send(data) /**renvoi du résultat comme réponse de la requête */
+                    }
+                })
+            }
+            else {
+                mongoClient.db().collection('CERISoNet').find().project({}).toArray((err, data) => {
+                    if (err) {
+                        return console.log('erreur base de données')
+                    }
+                    if (data) {
+                        // console.log(data);
+                        // console.log("toto");
+                        // console.log('requste ok')
+                        mongoClient.close() /**Fermeture de la connexion */
+                        res.send(data) /**renvoi du résultat comme réponse de la requête */
+                    }
+                })
+            }
+        }
+    })
+})
+
+app.get('/CERISoNet/comments/user', (req, res) => {
+    const id = req.query.id
+    // console.log("created by: ", id);
+    const sql = `SELECT * FROM fredouil.users WHERE id='${id}';`
+    pgClientPool.connect((err, client, done) => {
+        if (err) { console.log(`Error connecting to pg server ${err.stack}`) }
+        else {
+            client.query(sql, (err, result) => {
+                if (err) {
+                    responseData.status = 204
+                }
+                else {
+                    responseData.status = 200
+                    // console.log(result.rows[0]);
+                    if (result.rows[0]) {
+                        responseData.identifiant = result.rows[0].identifiant
+                        responseData.nom = result.rows[0].nom
+                        responseData.prenom = result.rows[0].prenom
+                        responseData.avatar = result.rows[0].avatar
+                        responseData.status_connexion = result.rows[0].statut_connexion
+                    }
+                    else {
+                        responseData.identifiant = id
+                        responseData.nom = "personne inconnu"
+                        responseData.prenom = "personne inconnu"
+                        responseData.avatar = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                        responseData.status_connexion = 0
+                    }
+                    // console.log(result.rows[0]);
+                }
+                res.send(responseData)
+            })
+            client.release()
+        }
+    })
+})
+
+app.get('/db-CERI/CERISoNet/like', (req, res) => {
     const hashtag = req.query.hashtag;
     // console.log(req);
     /**Connexion MongoDB */
@@ -205,33 +287,6 @@ app.get('/db-CERI/CERISoNet', (req, res) => {
                     }
                 })
             }
-        }
-    })
-})
-
-app.get('/CERISoNet/comments/user', (req, res) => {
-    const id = req.query.id
-    // console.log("created by: ", id);
-    const sql = `SELECT * FROM fredouil.users WHERE id='${id}';`
-    pgClientPool.connect((err, client, done) => {
-        if (err) { console.log(`Error connecting to pg server ${err.stack}`) }
-        else {
-            client.query(sql, (err, result) => {
-                if (err) {
-                    responseData.status = 204
-                }
-                else {
-                    responseData.status = 200
-                    responseData.identifiant = result.rows[0].identifiant
-                    responseData.nom = result.rows[0].nom
-                    responseData.prenom = result.rows[0].prenom
-                    responseData.avatar = result.rows[0].avatar
-                    responseData.status_connexion = result.rows[0].statut_connexion
-                    // console.log(result.rows[0]);
-                }
-                res.send(responseData)
-            })
-            client.release()
         }
     })
 })

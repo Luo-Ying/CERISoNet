@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
   message: string = '';
   msgType: string = '';
 
-  // isBandeauVisible: boolean = false;
+  isBandeauVisible: boolean = false;
 
   formData!: FormGroup;
 
@@ -64,6 +64,8 @@ export class LoginComponent implements OnInit {
 
         }
         else {
+          // console.log("??????????");
+
           this._VarGlob.bandeauMessage = "Connexion echouée ! Verifier votre username ou password.";
           this._VarGlob.bandeauMsgType = 'danger';
         }
@@ -73,6 +75,13 @@ export class LoginComponent implements OnInit {
         this._VarGlob.bandeauMsgType = 'danger';
       }
     );
+
+    setTimeout(() => {
+      this.isBandeauVisible = true;
+    }, 100);
+    setTimeout(() => {
+      this.isBandeauVisible = false
+    }, 5000);
 
   }
 

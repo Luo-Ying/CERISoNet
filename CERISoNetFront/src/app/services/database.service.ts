@@ -14,14 +14,18 @@ export class DatabaseService {
   constructor(private _http: HttpClient) { }
 
   GetAllComments(hashtag: string): Observable<Array<post>> {
+    console.log(encodeURIComponent(hashtag));
+
+    // console.log(hashtag);
     let result: Array<post>;
-    // let request = 'https://pedago.univ-avignon.fr:3231/db-CERI/CERISoNet';
     return Observable.create((observer: Subscriber<Array<post>>) => {
       this._http.get<any>(
-        `https://pedago.univ-avignon.fr:3231/db-CERI/CERISoNet?hashtag=${hashtag}`
+        `https://pedago.univ-avignon.fr:3231/db-CERI/CERISoNet?hashtag=${encodeURIComponent(hashtag)}`
       ).subscribe(
         data => {
-          // console.log(data);
+          console.log(hashtag);
+
+          console.log(data);
           result = data;
         },
         error => { /** erreur de l’observable httpClient */
@@ -43,7 +47,7 @@ export class DatabaseService {
         `https://pedago.univ-avignon.fr:3231/CERISoNet/comments/user?id=${id_author}`
       ).subscribe(
         data => {
-          // console.log(data);
+          console.log(data);
           author = data;
         },
         error => {

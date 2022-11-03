@@ -21,7 +21,7 @@ export class LandingPageComponent implements OnInit {
   // hashtagsToShow: Array<string> = [];
 
   page: number = 1;
-  pageSize: number = 1;
+  pageSize: number = 3;
 
   constructor(
     private route: ActivatedRoute,
@@ -35,10 +35,13 @@ export class LandingPageComponent implements OnInit {
 
     if (localStorage.getItem('id')) {
 
-      this._VarGlob.getAllComments("");
+      this.getAllComments("all");
       // this.hashtagsToShow = this.hashtags;
-      this.commentsArray = this._VarGlob.commentsArray;
-      this.hashtags = this._VarGlob.hashtags;
+      this._VarGlob.commentsArray = this.commentsArray;
+      this._VarGlob.hashtags = this.hashtags;
+
+      console.log(this.commentsArray);
+
 
     }
     else {
@@ -51,9 +54,41 @@ export class LandingPageComponent implements OnInit {
 
   getCommentsByHashtags(value: string): void {
     console.log(value);
-    this._VarGlob.getAllComments(value);
-    this.commentsArray = this._VarGlob.commentsArray;
-    this.hashtags = this._VarGlob.hashtags;
+    this.getAllComments(value);
+    this._VarGlob.commentsArray = this.commentsArray;
+    this._VarGlob.hashtags = this.hashtags;
+  }
+
+  getAllComments(value: string): void {
+    console.log(value);
+
+    this.commentsArray = [];
+    this.hashtags = ["all"];
+    this._database.GetAllComments(value).subscribe(
+      data => {
+        if (value != "all" && this.hashtags.indexOf(value) == -1) {
+          this.hashtags.push(value);
+        }
+        console.log(data);
+
+        data.forEach(element => {
+          console.log(element);
+          if (value == "all") {
+            if (element.hashtags) {
+              element.hashtags.forEach(e => {
+                this.hashtags.push(e);
+              })
+            }
+          }
+          this.commentsArray.push(element);
+        });
+
+      },
+      error => {
+        console.log(error);
+
+      }
+    )
   }
 
 }

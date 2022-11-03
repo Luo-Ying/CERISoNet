@@ -19,6 +19,8 @@ export class PostComponent implements OnInit {
 
   hashtags: Array<string> = ["all"];
 
+  imageNotFound = "https://aeroclub-issoire.fr/wp-content/uploads/2020/05/image-not-found.jpg";
+
   constructor(
     private _database: DatabaseService,
     private _VarGlob: VarGlobService,) { }
@@ -27,7 +29,7 @@ export class PostComponent implements OnInit {
 
     if (this.post) {
       console.log(this.post);
-      console.log(this.post.images.url);
+      console.log(this.post.images?.url);
 
       this._database.GetInfosUserById(this.post.createdBy).subscribe(
         data => {

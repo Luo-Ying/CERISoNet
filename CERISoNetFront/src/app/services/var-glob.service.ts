@@ -23,32 +23,4 @@ export class VarGlobService {
   getIsLogged(): boolean {
     return this.isLogged;
   }
-
-  getAllComments(value: string): void {
-    console.log(value);
-
-    this.commentsArray = [];
-    this.hashtags = ["all"];
-    this._database.GetAllComments(value).subscribe(
-      data => {
-        if (value != "" && value != "all" && this.hashtags.indexOf(value) == -1) {
-          this.hashtags.push(value);
-        }
-        data.forEach(element => {
-          console.log(element);
-          if (value == "" || value == "all") {
-            element.hashtags.forEach(e => {
-              this.hashtags.push(e);
-            })
-          }
-          this.commentsArray.push(element);
-        });
-
-      },
-      error => {
-        console.log(error);
-
-      }
-    )
-  }
 }
