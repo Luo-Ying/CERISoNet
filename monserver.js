@@ -83,13 +83,11 @@ let pgClientPool = new pgClient.Pool({
 });
 
 /**spécification du Data Source Name (DSN) de mongoDB => BD://host:port/db */
-// const dsnMongoDB = dsn_dbmongo
 
 let responseData = {}
 
 /**Route '/login' */
 app.post('/login', (req, res) => {
-    console.log(req.body);
     const shacode = crypto.createHash('sha1')
     const username = req.body.username
     /**Chiffrer mot de passe en sha1 */
@@ -108,15 +106,11 @@ app.post('/login', (req, res) => {
             /**Exécution de la requête SQL et traitement du résultat */
             client.query(sql_verify, (err, result) => {
                 if (err) {
-                    console.log("erreur!!");
                     responseData.status = 204
-                    console.log('Erreur d\'exécution de la requete' + err.stack)
                     responseData.statusMsg = 'Connexion échouée'
                 }
                 /**requête réussie => traitement du résultat stocké dans l’objet result */
-                else if ((result.rows[0] !== null) && (result.rows[0].motpasse === password)) {
-                    console.log("coucou");
-                    // console.log(result);
+                else if (result.rows[0] && (result.rows[0].motpasse === password)) {
                     client.query(sql_changeStatus, (e, rslt) => {
                         if (e) {
                             responseData.statusMsg = 'Une érreur du serveur est produit, veuillez réessayer plus tard.'
@@ -130,12 +124,10 @@ app.post('/login', (req, res) => {
                     responseData.statusMsg = `connexion réussie : bonjour ${result.rows[0].prenom}`
                 }
                 else {
-                    console.log("mot de pass erreur!!!");
                     responseData.status = 204
                     responseData.statusMsg = 'Connexion échouée : informations de connexion incorrecte';
                 }
                 res.send(responseData)  /** renvoi du résultat (ou des messages d’erreur) */
-                console.log("ok");
             })
             client.release()    /**connexion libérée */
         }
@@ -146,24 +138,19 @@ app.post('/login', (req, res) => {
 app.get('/disconnect', (req, res) => {
     const id = req.query.id
     const sql_changeStatus = `UPDATE fredouil.users SET statut_connexion=0 WHERE identifiant='${id}';`
-    console.log("coucou1");
-    console.log(id);
     pgClientPool.connect((err, client, done) => {
         if (err) { console.log(`Error connecting to pg server ${err.stack}`) }
         else {
             client.query(sql_changeStatus, (err, result) => {
                 if (err) {
                     responseData.status = 204
-                    // console.log('Erreur d\'exécution de la requete' + err.stack)
-                    // responseData.statusMsg = 'Connexion échouée'
+                    responseData.statusMsg = 'Connexion échouée'
                 }
                 else {
                     req.session.isConnected = false
                     responseData.status = 200
                     responseData.statusMsg = `déonnexion réussie`
                 }
-                // console.log("coucou2");
-                // console.log(responseData);
                 res.send(responseData)
             })
             client.release()
@@ -173,7 +160,6 @@ app.get('/disconnect', (req, res) => {
 
 app.get('/db-CERI/CERISoNet', (req, res) => {
     const hashtag = decodeURI(req.query.hashtag);
-    console.log(req.query);
     /**Connexion MongoDB */
     MongoClient.connect(dsn_dbmongo, { useNewUrlParser: true, useUnifiedTopology: true }, (err, mongoClient) => {
         if (err) {
@@ -187,10 +173,6 @@ app.get('/db-CERI/CERISoNet', (req, res) => {
                         return console.log('erreur base de données')
                     }
                     if (data) {
-                        // console.log("toto");
-                        // console.log('requste ok')
-                        console.log(hashtag);
-                        console.log(data);
                         mongoClient.close() /**Fermeture de la connexion */
                         res.send(data) /**renvoi du résultat comme réponse de la requête */
                     }
@@ -202,9 +184,6 @@ app.get('/db-CERI/CERISoNet', (req, res) => {
                         return console.log('erreur base de données')
                     }
                     if (data) {
-                        // console.log(data);
-                        // console.log("toto");
-                        // console.log('requste ok')
                         mongoClient.close() /**Fermeture de la connexion */
                         res.send(data) /**renvoi du résultat comme réponse de la requête */
                     }
@@ -216,7 +195,6 @@ app.get('/db-CERI/CERISoNet', (req, res) => {
 
 app.get('/CERISoNet/comments/user', (req, res) => {
     const id = req.query.id
-    // console.log("created by: ", id);
     const sql = `SELECT * FROM fredouil.users WHERE id='${id}';`
     pgClientPool.connect((err, client, done) => {
         if (err) { console.log(`Error connecting to pg server ${err.stack}`) }
@@ -227,7 +205,6 @@ app.get('/CERISoNet/comments/user', (req, res) => {
                 }
                 else {
                     responseData.status = 200
-                    // console.log(result.rows[0]);
                     if (result.rows[0]) {
                         responseData.identifiant = result.rows[0].identifiant
                         responseData.nom = result.rows[0].nom
@@ -242,7 +219,6 @@ app.get('/CERISoNet/comments/user', (req, res) => {
                         responseData.avatar = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
                         responseData.status_connexion = 0
                     }
-                    // console.log(result.rows[0]);
                 }
                 res.send(responseData)
             })
@@ -251,42 +227,60 @@ app.get('/CERISoNet/comments/user', (req, res) => {
     })
 })
 
-app.get('/db-CERI/CERISoNet/like', (req, res) => {
-    const hashtag = req.query.hashtag;
-    // console.log(req);
+// app.get('/db-CERI/CERISoNet/like', (req, res) => {
+//     const hashtag = req.query.hashtag;
+//     /**Connexion MongoDB */
+//     MongoClient.connect(dsn_dbmongo, { useNewUrlParser: true, useUnifiedTopology: true }, (err, mongoClient) => {
+//         if (err) {
+//             return console.log('erreur connexion base de données');
+//         }
+//         if (mongoClient) {
+//             /**Exécution des requêtes - findAll*/
+//             if (hashtag != "" && hashtag != "all") {
+//                 mongoClient.db().collection('CERISoNet').find({ "hashtags": hashtag }).project({}).toArray((err, data) => {
+//                     if (err) {
+//                         return console.log('erreur base de données')
+//                     }
+//                     if (data) {
+//                         mongoClient.close() /**Fermeture de la connexion */
+//                         res.send(data) /**renvoi du résultat comme réponse de la requête */
+//                     }
+//                 })
+//             }
+//             else {
+//                 mongoClient.db().collection('CERISoNet').find().project({}).toArray((err, data) => {
+//                     if (err) {
+//                         return console.log('erreur base de données')
+//                     }
+//                     if (data) {
+//                         mongoClient.close() /**Fermeture de la connexion */
+//                         res.send(data) /**renvoi du résultat comme réponse de la requête */
+//                     }
+//                 })
+//             }
+//         }
+//     })
+// })
+
+app.get('/db-CERI/CERISoNet/searchPost', (req, res) => {
+    const id = Number(req.query.id);
+    // console.log(typeof id);
     /**Connexion MongoDB */
     MongoClient.connect(dsn_dbmongo, { useNewUrlParser: true, useUnifiedTopology: true }, (err, mongoClient) => {
         if (err) {
             return console.log('erreur connexion base de données');
         }
         if (mongoClient) {
-            /**Exécution des requêtes - findAll*/
-            if (hashtag != "" && hashtag != "all") {
-                mongoClient.db().collection('CERISoNet').find({ "hashtags": hashtag }).project({}).toArray((err, data) => {
-                    if (err) {
-                        return console.log('erreur base de données')
-                    }
-                    if (data) {
-                        // console.log("toto");
-                        // console.log('requste ok')
-                        mongoClient.close() /**Fermeture de la connexion */
-                        res.send(data) /**renvoi du résultat comme réponse de la requête */
-                    }
-                })
-            }
-            else {
-                mongoClient.db().collection('CERISoNet').find().project({}).toArray((err, data) => {
-                    if (err) {
-                        return console.log('erreur base de données')
-                    }
-                    if (data) {
-                        // console.log("toto");
-                        // console.log('requste ok')
-                        mongoClient.close() /**Fermeture de la connexion */
-                        res.send(data) /**renvoi du résultat comme réponse de la requête */
-                    }
-                })
-            }
+            /**Exécution des requêtes - findOne*/
+            mongoClient.db().collection('CERISoNet').findOne({ "_id": id }, (err, data) => {
+                if (err) {
+                    return console.log('erreur base de données')
+                }
+                if (data) {
+                    mongoClient.close() /**Fermeture de la connexion */
+                    res.send(data) /**renvoi du résultat comme réponse de la requête */
+                }
+            })
         }
     })
 })

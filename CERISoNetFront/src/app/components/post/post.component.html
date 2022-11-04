@@ -8,18 +8,22 @@
         </div>
         <br>
         <div class="text-secondary">
-            {{this.post?.date}}
-            {{ this.post?.hour}}
+            {{this.post.date}}
+            {{ this.post.hour}}
         </div>
         <br><br><br>
-        <div class="text">
-            {{this.post?.body}}
-            <b *ngFor="let item of this.post?.hashtags" class="text-primary hashtag"> {{ item }} </b>
+        <div *ngIf="this.post.Shared == undefined" class="text">
+            {{this.post.body}}
+            <b *ngFor="let item of this.post.hashtags" class="text-primary hashtag"> {{ item }} </b>
             <br><br><br>
-            <p *ngIf="this.post?.images"><img src={{this.post?.images?.url}} alt="img" class="image"></p>
-            <p *ngIf="!this.post?.images"><img
+            <p *ngIf="this.post.images"><img src={{this.post.images.url}} alt="img" class="image"></p>
+            <!-- <p *ngIf="!this.post.images"><img
                     src="https://aeroclub-issoire.fr/wp-content/uploads/2020/05/image-not-found.jpg" alt="img"
-                    class="image"></p>
+                    class="image"></p> -->
+        </div>
+        <div *ngIf="this.post.Shared" class="post-shared">
+            <!-- Component PostShared -->
+            <app-post-shared [idPost]="this.post.Shared"></app-post-shared>
         </div>
         <br>
         <div class="group-icon-comment">
@@ -29,9 +33,9 @@
         </div>
         <hr>
         <span class="material-symbols-outlined"> recommend </span>
-        <span class="color-d1a642"> Aimé par {{this.post?.likes}} personnes</span>
+        <span class="color-d1a642"> Aimé par {{this.post.likes}} personnes</span>
         <br><br><br>
-        <app-comment *ngFor="let item of this.post?.comments" [comment]='item'></app-comment>
+        <app-comment *ngFor="let item of this.post.comments" [comment]='item'></app-comment>
         <div>
             <div class="form-group">
                 <textarea class="form-control" rows="1" placeholder="Comment ..."></textarea>

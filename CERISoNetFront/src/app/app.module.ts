@@ -19,6 +19,7 @@ import { VarGlobService } from './services/var-glob.service';
 import { PostComponent } from './components/post/post.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommentComponent } from './components/comment/comment.component';
+import { PostSharedComponent } from './components/post-shared/post-shared.component';
 
 @NgModule({
   declarations: [ /** Déclaration des composants, pipes, directives */
@@ -31,6 +32,7 @@ import { CommentComponent } from './components/comment/comment.component';
     TitleCasePipePipe,
     PostComponent,
     CommentComponent,
+    PostSharedComponent,
     // MatSliderModule,
   ],
   imports: [  /** Déclaration des modules utilisables */

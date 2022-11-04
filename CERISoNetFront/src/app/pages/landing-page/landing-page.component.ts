@@ -40,9 +40,6 @@ export class LandingPageComponent implements OnInit {
       this._VarGlob.commentsArray = this.commentsArray;
       this._VarGlob.hashtags = this.hashtags;
 
-      console.log(this.commentsArray);
-
-
     }
     else {
       this._VarGlob.bandeauMessage = "Connectez vous pour accéder au site !";
@@ -53,14 +50,12 @@ export class LandingPageComponent implements OnInit {
   }
 
   getCommentsByHashtags(value: string): void {
-    console.log(value);
     this.getAllComments(value);
     this._VarGlob.commentsArray = this.commentsArray;
     this._VarGlob.hashtags = this.hashtags;
   }
 
   getAllComments(value: string): void {
-    console.log(value);
 
     this.commentsArray = [];
     this.hashtags = ["all"];
@@ -69,10 +64,8 @@ export class LandingPageComponent implements OnInit {
         if (value != "all" && this.hashtags.indexOf(value) == -1) {
           this.hashtags.push(value);
         }
-        console.log(data);
 
         data.forEach(element => {
-          console.log(element);
           if (value == "all") {
             if (element.hashtags) {
               element.hashtags.forEach(e => {

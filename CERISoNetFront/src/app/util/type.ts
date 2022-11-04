@@ -12,7 +12,7 @@ export interface image {
 }
 
 export interface post {
-    share: number,
+    Shared: number,
     _id: number;
     body: string;
     comments: Array<comment>;

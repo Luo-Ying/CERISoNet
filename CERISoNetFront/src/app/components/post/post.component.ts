@@ -11,7 +11,8 @@ import { comment, image, post, author } from 'src/app/util/type';
 })
 export class PostComponent implements OnInit {
 
-  @Input() post: post | undefined;
+  @Input()
+  post!: post;
 
   author: author | undefined;
 
@@ -28,14 +29,11 @@ export class PostComponent implements OnInit {
   ngOnInit(): void {
 
     if (this.post) {
-      console.log(this.post);
-      console.log(this.post.images?.url);
+      // console.log(this.post.Shared);
 
       this._database.GetInfosUserById(this.post.createdBy).subscribe(
         data => {
-          // console.log(data);
           this.author = data;
-          console.log(this.author);
         },
         error => {
           console.log(error);
@@ -44,8 +42,6 @@ export class PostComponent implements OnInit {
       )
 
     }
-
-    // console.log(this.author);
 
   }
 

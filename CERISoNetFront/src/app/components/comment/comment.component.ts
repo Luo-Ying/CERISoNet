@@ -16,16 +16,11 @@ export class CommentComponent implements OnInit {
   constructor(private _database: DatabaseService) { }
 
   ngOnInit(): void {
-    // console.log(this.comment);
     if (this.comment) {
-      // console.log(this.comment);
-      // console.log(this.comment.);
 
       this._database.GetInfosUserById(this.comment.commentedBy).subscribe(
         data => {
-          // console.log(data);
           this.author = data;
-          // console.log(this.author);
         },
         error => {
           console.log(error);

@@ -1,0 +1,42 @@
+.bg-e1de9b {
+    background-color: #f1ead9;
+}
+
+.card-comment {
+    margin-left: 6%;
+    margin-right: 6%;
+}
+
+@media only screen and (max-width:800px) {
+    .avatar {
+        width: 40px;
+        height: 40px;
+    }
+
+    .image {
+        width: 50%;  
+        height: 50%;
+    }
+}
+
+@media only screen and (min-width:800px) {
+    
+    .avatar {
+        width: 100px;
+        height: 100px;
+    }
+
+    .image {
+        width: 20%;  
+        height: 20%;
+    }
+}
+
+.card-body {
+    margin-left: 3%;
+}
+
+.avatar {
+    border-radius: 50%;
+    margin-right: 2%;
+}

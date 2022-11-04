@@ -26,20 +26,14 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  // connect = () => {
-  //   // this.router.navigate(['/login'], {});
-  // }
-
   disconnect = () => {
     this._auth.Disconnect().subscribe(
       data => {
-        // console.log("putin");
         this.message = "Utilisateur déconnecte!";
         this.msgType = 'warning';
         this._VarGlob.bandeauMessage = "Utilisateur déconnecte!";
         this._VarGlob.bandeauMsgType = 'warning';
         this.isLogged = false;
-        // location.reload();
         this.router.navigate(['/login'], {});
       },
       error => {

@@ -17,9 +17,10 @@
         height: 40px;
     }
 
-    /* .image {
-
-    } */
+    .image {
+        width: 50%;  
+        height: 50%;
+    }
 }
 
 @media only screen and (min-width:800px) {
@@ -29,9 +30,10 @@
         height: 100px;
     }
 
-    /* .image {
-     width: 20%;   
-    } */
+    .image {
+        width: 20%;  
+        height: 20%;
+    }
 }
 
 .avatar {
@@ -60,11 +62,6 @@
 .button-send-comment:hover {
     background-color: #cfb67a;
     border-color: #cfb67a;
-}
-
-.image {
-    width: 20%;  
-    height: 20%;
 }
 
 .group-icon-comment {

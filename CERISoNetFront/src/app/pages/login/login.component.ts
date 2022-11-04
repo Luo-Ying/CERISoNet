@@ -60,12 +60,9 @@ export class LoginComponent implements OnInit {
           this._VarGlob.bandeauMessage = "Connexion  ! Bienvenu " + this.formData.value.username + ".";
           this._VarGlob.bandeauMsgType = 'info';
           this.router.navigate(['/'], {});
-          console.log(localStorage);
 
         }
         else {
-          // console.log("??????????");
-
           this._VarGlob.bandeauMessage = "Connexion echouée ! Verifier votre username ou password.";
           this._VarGlob.bandeauMsgType = 'danger';
         }

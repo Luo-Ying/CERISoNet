@@ -33,8 +33,6 @@ export class AuthentificationService {
           data => { /** / succes de l’observable httpClient */
             if (data.status == 200) {
               const date = new Date();
-              console.log(data);
-              console.log(username);
 
               // localStorage.setItem('accessToken', data);
               localStorage.setItem('id', username);
@@ -68,8 +66,6 @@ export class AuthentificationService {
       ).subscribe(
         data => {
           if (data.status == 200) {
-            console.log(data);
-
             localStorage.clear();
             pass = true;
           }

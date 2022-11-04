@@ -1,3 +1,20 @@
+@media only screen and (max-width:800px) {
+    .block-comment {
+        margin: auto;
+        width: 100%;
+        padding: 8%;
+    }
+}
+
+@media only screen and (min-width:800px) {
+    
+    .block-comment {
+        margin: auto;
+        width: 80%;
+        padding: 8%;
+    }
+}
+
 .feature {
     background: rgb(209, 139, 0);
     padding: 18px;
@@ -11,12 +28,6 @@
 .feature-inner h1 {
     color: #f8dbdb;
     font-size: 30px;
-}
-
-.block-comment {
-    margin: auto;
-    width: 80%;
-    padding: 8%;
 }
 
 .hashtag {
