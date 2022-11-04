@@ -23,17 +23,17 @@ export class PostSharedComponent implements OnInit {
       data => {
         this.post = data;
 
-        if (this.post) {
-          this._database.GetInfosUserById(this.post.createdBy).subscribe(
-            data => {
-              this.author = data;
-            },
-            error => {
-              console.log(error);
-            }
-          )
+        // if (this.post) {
+        this._database.GetInfosUserById(data.createdBy).subscribe(
+          data => {
+            this.author = data;
+          },
+          error => {
+            console.log(error);
+          }
+        )
 
-        }
+        // }
       },
       error => {
         console.log(error);

@@ -7,19 +7,16 @@
             {{this.author?.identifiant}}
         </div>
         <br>
-        <div class="text-secondary">
+        <div *ngIf="this.post" class="text-secondary">
             {{this.post.date}}
-            {{ this.post.hour}}
+            {{this.post.hour}}
         </div>
         <br><br><br>
-        <div *ngIf="this.post.Shared == undefined" class="text">
+        <div *ngIf="this.post" class="text">
             {{this.post.body}}
             <b *ngFor="let item of this.post.hashtags" class="text-primary hashtag"> {{ item }} </b>
             <br><br><br>
             <p *ngIf="this.post.images"><img src={{this.post.images.url}} alt="img" class="image"></p>
-            <p *ngIf="!this.post.images"><img
-                    src="https://aeroclub-issoire.fr/wp-content/uploads/2020/05/image-not-found.jpg" alt="img"
-                    class="image"></p>
         </div>
     </div>
 </div>
