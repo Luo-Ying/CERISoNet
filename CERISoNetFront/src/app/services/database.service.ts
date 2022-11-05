@@ -74,4 +74,26 @@ export class DatabaseService {
     });
   }
 
+  LikePost(id_post: number, id_user: number, nbLike: number, isLiked: boolean): Observable<boolean> {
+    let pass = false;
+
+    return Observable.create((observer: Subscriber<boolean>) => {
+      this._http.post<any>(
+        `https://pedago.univ-avignon.fr:3231/db-CERI/CERISoNet/updateLikedby`,
+        { id_post: id_post, id_user: id_user, nbLike, isLiked: isLiked },
+        this.options
+      ).subscribe(
+        data => {
+          pass = data;
+        },
+        error => {
+          console.error('une erreur est survenu!', error);
+        },
+        () => { /** terminaison de l’observable httpClient */
+          observer.next(pass);  /** renvoi des données pour l’observable principal */
+        }
+      )
+    });
+  }
+
 }

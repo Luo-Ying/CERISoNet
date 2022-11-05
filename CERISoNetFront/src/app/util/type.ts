@@ -22,9 +22,11 @@ export interface post {
     hour: string;
     images: image;
     likes: 5;
+    likedby: Array<number>;
 }
 
 export interface author {
+    id: number;
     avatar: string;
     identifiant: string;
     nom: string;

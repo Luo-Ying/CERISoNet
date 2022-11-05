@@ -69,7 +69,9 @@ export class LandingPageComponent implements OnInit {
           if (value == "all") {
             if (element.hashtags) {
               element.hashtags.forEach(e => {
-                this.hashtags.push(e);
+                if (this.hashtags.indexOf(e) == -1) {
+                  this.hashtags.push(e);
+                }
               })
             }
           }

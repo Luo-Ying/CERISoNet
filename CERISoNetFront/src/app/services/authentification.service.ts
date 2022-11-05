@@ -35,7 +35,8 @@ export class AuthentificationService {
               const date = new Date();
 
               // localStorage.setItem('accessToken', data);
-              localStorage.setItem('id', username);
+              localStorage.setItem('id', data.id);
+              localStorage.setItem('identifiant', username);
               localStorage.setItem('lastName', data.lastName);
               localStorage.setItem('firsteName', data.firstName);
               localStorage.setItem('urlAvatar', data.urlAvatar);

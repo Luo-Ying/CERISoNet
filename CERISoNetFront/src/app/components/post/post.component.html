@@ -1,10 +1,13 @@
 <div class="card bg-e1de9b card-comment">
     <div class="card-body">
         <br><br>
-        <img src={{this.author?.avatar}} alt="avatar" class="float-left avatar">
+        <div *ngIf="this.author">
+            <img *ngIf="this.author.avatar!=''" src={{this.author.avatar}} alt="avatar" class="float-left avatar">
+            <img *ngIf="this.author.avatar==''" src={{this.avatarEmpty}} alt="avatar" class="float-left avatar">
+        </div>
         <br>
-        <div>
-            {{this.author?.identifiant}}
+        <div *ngIf="this.author">
+            {{this.author.identifiant}}
         </div>
         <br>
         <div class="text-secondary">
@@ -16,24 +19,21 @@
             {{this.post.body}}
             <b *ngFor="let item of this.post.hashtags" class="text-primary hashtag"> {{ item }} </b>
             <br><br><br>
-            <p *ngIf="this.post.images"><img src={{this.post.images.url}} alt="img" class="image"></p>
-            <!-- <p *ngIf="!this.post.images"><img
-                    src="https://aeroclub-issoire.fr/wp-content/uploads/2020/05/image-not-found.jpg" alt="img"
-                    class="image"></p> -->
+            <p *ngIf="this.post.images"><img src={{this.post.images.url}} alt="[image not found]" class="image"></p>
         </div>
         <div *ngIf="this.post.Shared" class="post-shared">
-            <!-- Component PostShared -->
             <app-post-shared [idPost]="this.post.Shared"></app-post-shared>
         </div>
         <br>
         <div class="group-icon-comment">
-            <span class="material-symbols-outlined"> thumb_up </span>
+            <span *ngIf="!this.isLiked" (click)="like()" class="material-symbols-outlined"> thumb_up </span>
+            <span *ngIf="this.isLiked" (click)="dislike()" class="material-symbols-outlined isLiked"> recommend </span>
             <span class="material-symbols-outlined"> sms </span>
             <span class="material-symbols-outlined"> google_plus_reshare </span>
         </div>
         <hr>
         <span class="material-symbols-outlined"> recommend </span>
-        <span class="color-d1a642"> Aimé par {{this.post.likes}} personnes</span>
+        <span class="color-d1a642"> Aimé par {{this.nbLike}} personnes</span>
         <br><br><br>
         <app-comment *ngFor="let item of this.post.comments" [comment]='item'></app-comment>
         <div>

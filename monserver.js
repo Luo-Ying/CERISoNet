@@ -118,6 +118,7 @@ app.post('/login', (req, res) => {
                     })
                     req.session.isConnected = true
                     responseData.status = 200
+                    responseData.id = result.rows[0].id
                     responseData.lastName = result.rows[0].nom
                     responseData.firstName = result.rows[0].prenom
                     responseData.urlAvatar = result.rows[0].avatar
@@ -227,41 +228,6 @@ app.get('/CERISoNet/comments/user', (req, res) => {
     })
 })
 
-// app.get('/db-CERI/CERISoNet/like', (req, res) => {
-//     const hashtag = req.query.hashtag;
-//     /**Connexion MongoDB */
-//     MongoClient.connect(dsn_dbmongo, { useNewUrlParser: true, useUnifiedTopology: true }, (err, mongoClient) => {
-//         if (err) {
-//             return console.log('erreur connexion base de données');
-//         }
-//         if (mongoClient) {
-//             /**Exécution des requêtes - findAll*/
-//             if (hashtag != "" && hashtag != "all") {
-//                 mongoClient.db().collection('CERISoNet').find({ "hashtags": hashtag }).project({}).toArray((err, data) => {
-//                     if (err) {
-//                         return console.log('erreur base de données')
-//                     }
-//                     if (data) {
-//                         mongoClient.close() /**Fermeture de la connexion */
-//                         res.send(data) /**renvoi du résultat comme réponse de la requête */
-//                     }
-//                 })
-//             }
-//             else {
-//                 mongoClient.db().collection('CERISoNet').find().project({}).toArray((err, data) => {
-//                     if (err) {
-//                         return console.log('erreur base de données')
-//                     }
-//                     if (data) {
-//                         mongoClient.close() /**Fermeture de la connexion */
-//                         res.send(data) /**renvoi du résultat comme réponse de la requête */
-//                     }
-//                 })
-//             }
-//         }
-//     })
-// })
-
 app.get('/db-CERI/CERISoNet/searchPost', (req, res) => {
     const id = Number(req.query.id);
     // console.log(typeof id);
@@ -281,6 +247,30 @@ app.get('/db-CERI/CERISoNet/searchPost', (req, res) => {
                     res.send(data) /**renvoi du résultat comme réponse de la requête */
                 }
             })
+        }
+    })
+})
+
+app.post('/db-CERI/CERISoNet/updateLikedby', (req, res) => {
+    const id_post = req.body.id_post;
+    const id_user = req.body.id_user;
+    const nbLike = req.body.nbLike;
+    const isLiked = req.body.isLiked;
+    // console.log(typeof nbLike);
+    /**Connexion MongoDB */
+    MongoClient.connect(dsn_dbmongo, { useNewUrlParser: true, useUnifiedTopology: true }, (err, mongoClient) => {
+        if (err) {
+            return console.log('erreur connexion base de données');
+        }
+        if (mongoClient) {
+            /**Exécution des requêtes - findAll*/
+            mongoClient.db().collection('CERISoNet').updateOne({ "_id": id_post }, { $set: { "likes": nbLike } })
+            if (isLiked) {
+                mongoClient.db().collection('CERISoNet').updateOne({ "_id": id_post }, { $addToSet: { "likedby": id_user } })
+            } else {
+                mongoClient.db().collection('CERISoNet').updateOne({ "_id": id_post }, { $pull: { "likedby": id_user } })
+            }
+
         }
     })
 })
