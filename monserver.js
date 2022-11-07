@@ -82,12 +82,10 @@ let pgClientPool = new pgClient.Pool({
     port: port_dbpsql
 });
 
-/**spécification du Data Source Name (DSN) de mongoDB => BD://host:port/db */
-
-let responseData = {}
-
 /**Route '/login' */
 app.post('/login', (req, res) => {
+    /**spécification du Data Source Name (DSN) de mongoDB => BD://host:port/db */
+    let responseData = {}
     const shacode = crypto.createHash('sha1')
     const username = req.body.username
     /**Chiffrer mot de passe en sha1 */
@@ -137,8 +135,11 @@ app.post('/login', (req, res) => {
 })
 
 app.get('/disconnect', (req, res) => {
+    /**spécification du Data Source Name (DSN) de mongoDB => BD://host:port/db */
+    let responseData = {}
     const id = req.query.id
-    const sql_changeStatus = `UPDATE fredouil.users SET statut_connexion=0 WHERE identifiant='${id}';`
+    console.log(id);
+    const sql_changeStatus = `UPDATE fredouil.users SET statut_connexion=0 WHERE id='${id}';`
     pgClientPool.connect((err, client, done) => {
         if (err) { console.log(`Error connecting to pg server ${err.stack}`) }
         else {
@@ -152,6 +153,8 @@ app.get('/disconnect', (req, res) => {
                     responseData.status = 200
                     responseData.statusMsg = `déonnexion réussie`
                 }
+                // console.log(result);
+                // console.log(responseData);
                 res.send(responseData)
             })
             client.release()
@@ -195,6 +198,8 @@ app.get('/db-CERI/CERISoNet', (req, res) => {
 })
 
 app.get('/CERISoNet/comments/user', (req, res) => {
+    /**spécification du Data Source Name (DSN) de mongoDB => BD://host:port/db */
+    let responseData = {}
     const id = req.query.id
     const sql = `SELECT * FROM fredouil.users WHERE id='${id}';`
     pgClientPool.connect((err, client, done) => {

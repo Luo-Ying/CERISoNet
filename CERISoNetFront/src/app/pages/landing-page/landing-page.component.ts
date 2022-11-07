@@ -21,7 +21,7 @@ export class LandingPageComponent implements OnInit {
   // hashtagsToShow: Array<string> = [];
 
   page: number = 1;
-  pageSize: number = 3;
+  pageSize: number = 2;
 
   constructor(
     private route: ActivatedRoute,
