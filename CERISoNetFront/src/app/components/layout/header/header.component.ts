@@ -31,6 +31,7 @@ export class HeaderComponent implements OnInit {
       data => {
         this.message = "Utilisateur déconnecte!";
         this.msgType = 'warning';
+        this._VarGlob.userLastLogin = "";
         this._VarGlob.bandeauMessage = "Utilisateur déconnecte!";
         this._VarGlob.bandeauMsgType = 'warning';
         this.isLogged = false;

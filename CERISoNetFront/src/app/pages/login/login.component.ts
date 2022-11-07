@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit {
         this.isLogged = data;
         this._VarGlob.isLogged = data; /** boolean retourné par l’observable */
         if (this.isLogged == true) {
-          this._VarGlob.bandeauMessage = "Connexion  ! Bienvenu " + this.formData.value.username + ".";
+          this._VarGlob.bandeauMessage = "Connexion réussi ! Bienvenu " + this.formData.value.username + `, La dernière connexion est ${this._VarGlob.userLastLogin}`;
           this._VarGlob.bandeauMsgType = 'info';
           this.router.navigate(['/'], {});
 

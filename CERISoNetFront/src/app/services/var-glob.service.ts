@@ -10,6 +10,8 @@ export class VarGlobService {
 
   isLogged: boolean = false;
 
+  userLastLogin: string = "";
+
   bandeauMessage: string = "";
 
   bandeauMsgType: string = "";

@@ -1,4 +1,3 @@
-
 export interface comment {
     commentedBy: number;
     date: string;

@@ -1,6 +1,7 @@
 import { Injectable, ɵisObservable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subscriber } from 'rxjs';
+import { VarGlobService } from './var-glob.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ export class AuthentificationService {
 
   options = { headers: { 'Content-Type': 'application/json' } };
 
-  constructor(private _http: HttpClient) { }
+  constructor(private _http: HttpClient, private _VarGlob: VarGlobService,) { }
 
   IsLogged(): boolean {
     if (localStorage.getItem('accessToken') == 'true') { return true; }
@@ -36,12 +37,15 @@ export class AuthentificationService {
 
               // localStorage.setItem('accessToken', data);
               // if (!localStorage.getItem())
+              // this._VarGlob.idUser = data.id;
               localStorage.setItem('id', data.id);
-              localStorage.setItem('identifiant', username);
-              localStorage.setItem('lastName', data.lastName);
-              localStorage.setItem('firsteName', data.firstName);
-              localStorage.setItem('urlAvatar', data.urlAvatar);
-              localStorage.setItem('lastLogin', date.toLocaleDateString() + ' ' + date.toLocaleTimeString());
+              if (localStorage.getItem(`${localStorage.getItem('id')}_lastLogin`)) { }
+              this._VarGlob.userLastLogin += localStorage.getItem(`${localStorage.getItem('id')}_lastLogin`);
+              localStorage.setItem(`${data.id}_identifiant`, username);
+              localStorage.setItem(`${data.id}_lastName`, data.lastName);
+              localStorage.setItem(`${data.id}_firsteName`, data.firstName);
+              localStorage.setItem(`${data.id}_urlAvatar`, data.urlAvatar);
+              localStorage.setItem(`${data.id}_lastLogin`, date.toLocaleDateString() + ' ' + date.toLocaleTimeString());
               trueId = true;
             }
             else {
