@@ -9,18 +9,34 @@ import { comment, author } from 'src/app/util/type';
 })
 export class CommentComponent implements OnInit {
 
-  @Input() comment: comment | undefined;
+  @Input()
+  comment!: comment;
 
-  author: author | undefined;
+  @Input()
+  idPost!: number;
 
-  constructor(private _database: DatabaseService) { }
+  author!: author;
+
+  idUser: number;
+
+  avatarEmpty = "https://upload.wikimedia.org/wikipedia/commons/2/2c/Default_pfp.svg";
+
+  constructor(private _database: DatabaseService) {
+    this.idUser = Number(localStorage.getItem("id"));
+  }
 
   ngOnInit(): void {
+
     if (this.comment) {
 
       this._database.GetInfosUserById(this.comment.commentedBy).subscribe(
         data => {
           this.author = data;
+          // console.log(data);
+          // console.log(data.identifiant);
+
+          // console.log(data.avatar);
+
         },
         error => {
           console.log(error);
@@ -28,6 +44,25 @@ export class CommentComponent implements OnInit {
         }
       )
 
+    }
+  }
+
+  deleteComment(): void {
+    if (this.comment) {
+      console.log(typeof this.comment.text);
+      console.log(this.idPost);
+      this._database.DeleteComment(this.idPost, this.comment.text).subscribe(
+        data => {
+          // this.author = data;
+          console.log("delete comment!");
+          location.reload();
+
+        },
+        error => {
+          console.log(error);
+
+        }
+      )
     }
   }
 

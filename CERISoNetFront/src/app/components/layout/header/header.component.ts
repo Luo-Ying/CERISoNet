@@ -34,6 +34,7 @@ export class HeaderComponent implements OnInit {
         this._VarGlob.bandeauMessage = "Utilisateur déconnecte!";
         this._VarGlob.bandeauMsgType = 'warning';
         this.isLogged = false;
+        this._VarGlob.isLogged = false;
         this.router.navigate(['/login'], {});
       },
       error => {

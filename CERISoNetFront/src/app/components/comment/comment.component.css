@@ -25,3 +25,36 @@
 .color-d1a642 {
     color: #d1a642;
 }
+
+.delete {
+    display: flex;
+    margin-left: 8.2%;
+    margin-top: 1.5%;
+}
+
+.btn-delete {
+    background-color: #f1ead9;
+    color: black;
+    border: none;
+}
+
+.icon-delete:hover {
+    cursor: pointer;
+}
+
+.text-muet {
+    color: rgb(104, 104, 104);
+    margin-top: 0.3%;
+}
+
+.text-muet:hover {
+    cursor: pointer;
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 100,
+  'GRAD' 0,
+  'opsz' 48
+}

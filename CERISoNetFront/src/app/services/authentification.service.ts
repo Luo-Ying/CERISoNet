@@ -35,6 +35,7 @@ export class AuthentificationService {
               const date = new Date();
 
               // localStorage.setItem('accessToken', data);
+              // if (!localStorage.getItem())
               localStorage.setItem('id', data.id);
               localStorage.setItem('identifiant', username);
               localStorage.setItem('lastName', data.lastName);
@@ -67,7 +68,7 @@ export class AuthentificationService {
       ).subscribe(
         data => {
           if (data.status == 200) {
-            localStorage.clear();
+            // localStorage.clear();
             pass = true;
           }
           else {

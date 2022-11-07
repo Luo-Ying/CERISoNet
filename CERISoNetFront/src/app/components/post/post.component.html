@@ -27,7 +27,8 @@
         <br>
         <div class="group-icon-comment">
             <span *ngIf="!this.isLiked" (click)="like()" class="material-symbols-outlined"> thumb_up </span>
-            <span *ngIf="this.isLiked" (click)="dislike()" class="material-symbols-outlined isLiked"> recommend </span>
+            <span *ngIf="this.isLiked" (click)="dislike()" class="material-symbols-outlined"> thumb_up </span>
+            <!-- <span *ngIf="this.isLiked" (click)="dislike()" class="material-symbols-outlined isLiked"> recommend </span> -->
             <span class="material-symbols-outlined"> sms </span>
             <span class="material-symbols-outlined"> google_plus_reshare </span>
         </div>
@@ -35,14 +36,19 @@
         <span class="material-symbols-outlined"> recommend </span>
         <span class="color-d1a642"> Aimé par {{this.nbLike}} personnes</span>
         <br><br><br>
-        <app-comment *ngFor="let item of this.post.comments" [comment]='item'></app-comment>
+        <div *ngIf="this.comments.length">
+            <app-comment *ngFor="let item of this.comments" [comment]='item' [idPost]='this.post._id'></app-comment>
+        </div>
         <div>
-            <div class="form-group">
-                <textarea class="form-control" rows="1" placeholder="Comment ..."></textarea>
+            <form #commentForm="ngForm" [formGroup]="formData" (ngSubmit)="onSubmit(); commentForm.resetForm()"
+                class="form-group">
+                <textarea formControlName="comment" class="form-control" rows="1" placeholder="Comment ..."></textarea>
+                <p *ngIf="this.isSubmitedCommentEmpty" class="commentEmptyError">Le commentaire ne peut pas être vide!
+                </p>
                 <div class="text-right">
                     <button type="submit" class="btn btn-primary mb-2 button-send-comment">Send</button>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>

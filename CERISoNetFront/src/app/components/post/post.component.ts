@@ -1,8 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { DatabaseService } from 'src/app/services/database.service';
 import { VarGlobService } from 'src/app/services/var-glob.service';
+import { FormControl, FormGroup, NgForm } from '@angular/forms';
 
-import { comment, image, post, author } from 'src/app/util/type';
+import { comment, post, author } from 'src/app/util/type';
+import { dateFormat, hourFormat } from 'src/app/util/algorithm';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-post',
@@ -29,24 +32,34 @@ export class PostComponent implements OnInit {
   avatarEmpty = "https://upload.wikimedia.org/wikipedia/commons/2/2c/Default_pfp.svg";
   imageNotFound = "https://aeroclub-issoire.fr/wp-content/uploads/2020/05/image-not-found.jpg";
 
+  comments: Array<comment> = [];
+
+  formData!: FormGroup;
+
+  isSubmitedCommentEmpty: boolean = false;
+
   constructor(
     private _database: DatabaseService,
-    private _VarGlob: VarGlobService,) { }
+    private _VarGlob: VarGlobService,
+    private router: Router,) { }
 
   ngOnInit(): void {
+
     this.id_user = Number(localStorage.getItem('id'));
     if (this.post) {
       this.nbLike = this.post.likes;
-      if (this.post.likedby.indexOf(this.id_user) == -1) {
-        this.isLiked = false;
-      } else {
-        this.isLiked = true;
+      if (this.post.likedby) {
+        if (this.post.likedby.indexOf(this.id_user) == -1) {
+          this.isLiked = false;
+        } else {
+          this.isLiked = true;
+        }
       }
 
       this._database.GetInfosUserById(this.post.createdBy).subscribe(
         data => {
           this.author = data;
-          console.log(data);
+          // console.log(data);
 
         },
         error => {
@@ -54,18 +67,32 @@ export class PostComponent implements OnInit {
 
         }
       );
+
+      if (this.post.comments.length > 0) {
+        // console.log(this.post.comments);
+
+        this.post.comments.forEach(element => {
+          // console.log(element);
+
+          this.comments.push(element);
+        });
+      }
     }
+
+    this.formData = new FormGroup({
+      comment: new FormControl(),
+    });
 
   }
 
   like(): void {
-    console.log("coucou");
+    // console.log("coucou");
     this.nbLike++;
     this.isLiked = !this.isLiked;
     this._database.LikePost(this.post._id, this.id_user, this.nbLike, this.isLiked).subscribe(
       data => {
         // this.author = data;
-        console.log(data);
+        // console.log(data);
 
       },
       error => {
@@ -81,7 +108,7 @@ export class PostComponent implements OnInit {
     this._database.LikePost(this.post._id, this.id_user, this.nbLike, this.isLiked).subscribe(
       data => {
         // this.author = data;
-        console.log(data);
+        // console.log(data);
 
       },
       error => {
@@ -89,6 +116,38 @@ export class PostComponent implements OnInit {
 
       }
     );
+  }
+
+  onSubmit() {
+    console.log("submit!");
+    console.log(this.formData.value.comment);
+    let date = dateFormat(new Date());
+    let hour = hourFormat(new Date());
+    if (this.formData.value.comment != null) {
+      this.isSubmitedCommentEmpty = false;
+      let objComment: comment = {
+        text: this.formData.value.comment,
+        commentedBy: this.id_user,
+        date: date,
+        hour: hour,
+      };
+      this._database.AddComment(this.post._id, objComment).subscribe(
+        data => {
+          // this.author = data;
+          console.log("add comment!");
+          location.reload();
+
+        },
+        error => {
+          console.log(error);
+
+        }
+      )
+    }
+    else {
+      this.isSubmitedCommentEmpty = true;
+    }
+    // location.reload();
   }
 
 }

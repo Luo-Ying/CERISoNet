@@ -33,7 +33,6 @@ import { PostSharedComponent } from './components/post-shared/post-shared.compon
     PostComponent,
     CommentComponent,
     PostSharedComponent,
-    // MatSliderModule,
   ],
   imports: [  /** Déclaration des modules utilisables */
     BrowserModule,

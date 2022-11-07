@@ -270,7 +270,68 @@ app.post('/db-CERI/CERISoNet/updateLikedby', (req, res) => {
             } else {
                 mongoClient.db().collection('CERISoNet').updateOne({ "_id": id_post }, { $pull: { "likedby": id_user } })
             }
+            // mongoClient.close()
+            res.sendStatus(200)
+        }
+    })
+})
 
+app.post('/db-CERI/CERISoNet/addComment', (req, res) => {
+    const id_post = req.body.id_post
+    const comment = req.body.comment;
+    // console.log(typeof nbLike);
+    console.log(comment.commentedBy);
+    /**Connexion MongoDB */
+    MongoClient.connect(dsn_dbmongo, { useNewUrlParser: true, useUnifiedTopology: true }, (err, mongoClient) => {
+        if (err) {
+            return console.log('erreur connexion base de données');
+        }
+        if (mongoClient) {
+            const objComment = {
+                "text": comment.text,
+                "commentedBy": comment.commentedBy,
+                "date": comment.date,
+                "hour": comment.hour
+            }
+            /**Exécution des requêtes - findAll*/
+            mongoClient.db().collection('CERISoNet').updateOne({ "_id": id_post }, { $addToSet: { "comments": objComment } }, (err, data) => {
+
+                if (err) {
+                    return console.log('erreur base de données')
+                }
+                if (data) {
+                    // console.log("Commetnaire ajouter")
+                    mongoClient.close() /**Fermeture de la connexion */
+                    res.send(data) /**renvoi du résultat comme réponse de la requête */
+                }
+            })
+        }
+    })
+})
+
+app.post('/db-CERI/CERISoNet/deleteComment', (req, res) => {
+    const id_post = req.body.id_post
+    const text = req.body.commentText;
+    // console.log(typeof nbLike);
+    // console.log(comment.commentedBy);
+    /**Connexion MongoDB */
+    MongoClient.connect(dsn_dbmongo, { useNewUrlParser: true, useUnifiedTopology: true }, (err, mongoClient) => {
+        if (err) {
+            return console.log('erreur connexion base de données');
+        }
+        if (mongoClient) {
+            /**Exécution des requêtes - findAll*/
+            mongoClient.db().collection('CERISoNet').updateOne({ "_id": id_post }, { $pull: { "comments": { "text": text } } }, (err, data) => {
+
+                if (err) {
+                    return console.log('erreur base de données')
+                }
+                if (data) {
+                    // console.log("Commetnaire ajouter")
+                    mongoClient.close() /**Fermeture de la connexion */
+                    res.send(data) /**renvoi du résultat comme réponse de la requête */
+                }
+            })
         }
     })
 })

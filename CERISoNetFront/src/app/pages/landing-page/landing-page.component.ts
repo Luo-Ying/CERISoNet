@@ -33,7 +33,7 @@ export class LandingPageComponent implements OnInit {
 
   ngOnInit(): void {
 
-    if (localStorage.getItem('id')) {
+    if (this._VarGlob.isLogged) {
 
       this.getAllComments("all");
       // this.hashtagsToShow = this.hashtags;
@@ -42,7 +42,7 @@ export class LandingPageComponent implements OnInit {
 
     }
     else {
-      this._VarGlob.bandeauMessage = "Connectez vous pour accéder au site !";
+      this._VarGlob.bandeauMessage = "Connectez-vous pour accéder au site !";
       this._VarGlob.bandeauMsgType = 'warning';
       this.router.navigate(['/login'], {});
     }

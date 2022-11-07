@@ -2,7 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { observable, Observable, Subscribable, Subscriber } from 'rxjs';
 
-import { post, author } from 'src/app/util/type';
+import { post, author, comment } from 'src/app/util/type';
+import { dateFormat } from 'src/app/util/algorithm';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -94,6 +96,68 @@ export class DatabaseService {
         }
       )
     });
+  }
+
+  AddComment(id_post: number, objComment: comment): Observable<boolean> {
+    let pass = false;
+    // let date = dateFormat(new Date());
+    // console.log(date);
+
+    return Observable.create((observer: Subscriber<boolean>) => {
+      this._http.post<any>(
+        `https://pedago.univ-avignon.fr:3231/db-CERI/CERISoNet/addComment`,
+        { id_post: id_post, comment: objComment },
+        this.options
+      ).subscribe(
+        data => {
+
+          if (data.modifiedCount) {
+            pass = true;
+          }
+          else {
+            pass = false
+          }
+
+        },
+        error => {
+          console.error('une erreur est survenu!', error);
+        },
+        () => { /** terminaison de l’observable httpClient */
+          observer.next(pass);  /** renvoi des données pour l’observable principal */
+        }
+      )
+    })
+  }
+
+  DeleteComment(id_post: number, commentText: string): Observable<boolean> {
+    let pass = false;
+    // let date = dateFormat(new Date());
+    // console.log(date);
+
+    return Observable.create((observer: Subscriber<boolean>) => {
+      this._http.post<any>(
+        `https://pedago.univ-avignon.fr:3231/db-CERI/CERISoNet/deleteComment`,
+        { id_post: id_post, commentText: commentText },
+        this.options
+      ).subscribe(
+        data => {
+
+          if (data.modifiedCount) {
+            pass = true;
+          }
+          else {
+            pass = false
+          }
+
+        },
+        error => {
+          console.error('une erreur est survenu!', error);
+        },
+        () => { /** terminaison de l’observable httpClient */
+          observer.next(pass);  /** renvoi des données pour l’observable principal */
+        }
+      )
+    })
   }
 
 }
