@@ -36,6 +36,7 @@ export class HeaderComponent implements OnInit {
         this._VarGlob.bandeauMsgType = 'warning';
         this.isLogged = false;
         this._VarGlob.isLogged = false;
+        localStorage.removeItem('id');
         this.router.navigate(['/login'], {});
       },
       error => {

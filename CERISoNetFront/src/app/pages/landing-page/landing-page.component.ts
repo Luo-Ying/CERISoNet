@@ -17,8 +17,12 @@ export class LandingPageComponent implements OnInit {
 
   commentsArray: Array<post> = [];
 
+  isCollapsed: boolean = false;
+
+  isOrderByNbLikesUpDown: boolean | undefined;
+  isOrderByDateUpDown: boolean | undefined;
+
   hashtags: Array<string> = ["all"];
-  // hashtagsToShow: Array<string> = [];
 
   page: number = 1;
   pageSize: number = 2;
@@ -33,12 +37,9 @@ export class LandingPageComponent implements OnInit {
 
   ngOnInit(): void {
 
-    if (this._VarGlob.isLogged) {
+    if (localStorage.getItem('id')) {
 
       this.getAllComments("all");
-      // this.hashtagsToShow = this.hashtags;
-      this._VarGlob.commentsArray = this.commentsArray;
-      this._VarGlob.hashtags = this.hashtags;
 
     }
     else {
@@ -48,25 +49,49 @@ export class LandingPageComponent implements OnInit {
     }
 
   }
+  // TODO: trier côté fronend ? (peut fonctionner ensemble avec filter du hashtag) 
+  // trier côté backend ? (fonctionne séparément avec filtre du hashtag)
 
-  getCommentsByHashtags(value: string): void {
-    this.getAllComments(value);
-    this._VarGlob.commentsArray = this.commentsArray;
-    this._VarGlob.hashtags = this.hashtags;
+  getCommentsOrderByNbLike(): void {
+    this.isOrderByDateUpDown = undefined;
+    if (this.isOrderByNbLikesUpDown) {
+      this.isOrderByNbLikesUpDown = !this.isOrderByNbLikesUpDown;
+    }
+    else {
+      this.isOrderByNbLikesUpDown = true;
+    }
+    console.log(this.isOrderByNbLikesUpDown);
+
   }
 
-  getAllComments(value: string): void {
+  getCommentsOrderByDate(): void {
+    this.isOrderByNbLikesUpDown = undefined;
+    if (this.isOrderByDateUpDown) {
+      this.isOrderByDateUpDown = !this.isOrderByDateUpDown;
+    }
+    else {
+      this.isOrderByDateUpDown = true;
+    }
+    console.log(this.isOrderByDateUpDown);
+
+  }
+
+  getCommentsByHashtags(hashtag: string): void {
+    this.getAllComments(hashtag);
+  }
+
+  getAllComments(hashtag: string): void {
 
     this.commentsArray = [];
     this.hashtags = ["all"];
-    this._database.GetAllComments(value).subscribe(
+    this._database.GetAllComments(hashtag).subscribe(
       data => {
-        if (value != "all" && this.hashtags.indexOf(value) == -1) {
-          this.hashtags.push(value);
+        if (hashtag != "all" && this.hashtags.indexOf(hashtag) == -1) {
+          this.hashtags.push(hashtag);
         }
 
         data.forEach(element => {
-          if (value == "all") {
+          if (hashtag == "all") {
             if (element.hashtags) {
               element.hashtags.forEach(e => {
                 if (this.hashtags.indexOf(e) == -1) {

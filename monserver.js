@@ -162,6 +162,30 @@ app.get('/disconnect', (req, res) => {
     })
 })
 
+const getAllComments = (mongoClient, res) => {
+    mongoClient.db().collection('CERISoNet').find().project({}).toArray((err, data) => {
+        if (err) {
+            return console.log('erreur base de données')
+        }
+        if (data) {
+            mongoClient.close() /**Fermeture de la connexion */
+            res.send(data) /**renvoi du résultat comme réponse de la requête */
+        }
+    })
+}
+
+const getCommentsFilterByHashtag = (mongoClient, hashtag, res) => {
+    mongoClient.db().collection('CERISoNet').find({ "hashtags": hashtag }).project({}).toArray((err, data) => {
+        if (err) {
+            return console.log('erreur base de données')
+        }
+        if (data) {
+            mongoClient.close() /**Fermeture de la connexion */
+            res.send(data) /**renvoi du résultat comme réponse de la requête */
+        }
+    })
+}
+
 app.get('/db-CERI/CERISoNet', (req, res) => {
     const hashtag = decodeURI(req.query.hashtag);
     /**Connexion MongoDB */
@@ -172,26 +196,10 @@ app.get('/db-CERI/CERISoNet', (req, res) => {
         if (mongoClient) {
             /**Exécution des requêtes - findAll*/
             if (hashtag != "all") {
-                mongoClient.db().collection('CERISoNet').find({ "hashtags": hashtag }).project({}).toArray((err, data) => {
-                    if (err) {
-                        return console.log('erreur base de données')
-                    }
-                    if (data) {
-                        mongoClient.close() /**Fermeture de la connexion */
-                        res.send(data) /**renvoi du résultat comme réponse de la requête */
-                    }
-                })
+                getCommentsFilterByHashtag(mongoClient, hashtag, res);
             }
             else {
-                mongoClient.db().collection('CERISoNet').find().project({}).toArray((err, data) => {
-                    if (err) {
-                        return console.log('erreur base de données')
-                    }
-                    if (data) {
-                        mongoClient.close() /**Fermeture de la connexion */
-                        res.send(data) /**renvoi du résultat comme réponse de la requête */
-                    }
-                })
+                getAllComments(mongoClient, res);
             }
         }
     })
@@ -256,6 +264,8 @@ app.get('/db-CERI/CERISoNet/searchPost', (req, res) => {
     })
 })
 
+
+// TODO: Demande pour la list 'likedby' dans BD
 app.post('/db-CERI/CERISoNet/updateLikedby', (req, res) => {
     const id_post = req.body.id_post;
     const id_user = req.body.id_user;
@@ -280,6 +290,8 @@ app.post('/db-CERI/CERISoNet/updateLikedby', (req, res) => {
         }
     })
 })
+
+// TODO: Faire la requête du partage du post!
 
 app.post('/db-CERI/CERISoNet/addComment', (req, res) => {
     const id_post = req.body.id_post
@@ -340,3 +352,5 @@ app.post('/db-CERI/CERISoNet/deleteComment', (req, res) => {
         }
     })
 })
+
+// TODO: Gestion des notifications de connexion et de déconnexion des internautes par l'utilisation de WebSockets

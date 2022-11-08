@@ -11,7 +11,7 @@
     .block-comment {
         margin: auto;
         width: 80%;
-        padding: 8%;
+        padding: 3%;
     }
 }
 
@@ -38,4 +38,16 @@
     display: flex !important;
     justify-content: right !important;
     margin-top: 2%;
+}
+
+.div-collapse {
+    margin-top: 1.5%;
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48
 }

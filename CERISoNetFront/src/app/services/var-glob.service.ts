@@ -16,10 +16,6 @@ export class VarGlobService {
 
   bandeauMsgType: string = "";
 
-  commentsArray: Array<post> = [];
-
-  hashtags: Array<string> = ["all"];
-
   constructor(private _database: DatabaseService) { }
 
   getIsLogged(): boolean {
