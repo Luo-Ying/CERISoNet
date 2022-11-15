@@ -13,7 +13,7 @@ export class WebSocketService {
   socket: any;
   constructor() {
     /** Connexion au serveur pour mise en place webSocket */
-    this.socket = io('hhtps://pedago.univ-avignon.fr:3231')
+    this.socket = io('https://pedago.univ-avignon.fr:3231')
   }
 
   /** 

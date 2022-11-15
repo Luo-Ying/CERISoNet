@@ -68,7 +68,11 @@ const server = https.createServer(options, app).listen(3231, () => {
  */
 
 /** Gestion des websockets côté serveur */
-const io = require('socket.io')(server);
+const io = require('socket.io')(server, {
+    cors: {
+        origin: true,
+    },
+})
 
 /** Gestion de la connection et des messages reçus de la part d'un client */
 io.on('connection', socketClient => {
@@ -80,6 +84,7 @@ io.on('connection', socketClient => {
 
     /** Réception d'un message d'un client (event: 'messageClient', données: data) et renvoie d'une réponse */
     socketClient.on('messageClient', data => {
+        console.log('messageClient')
         socketClient.emit('reponse', 'serveur => socketClient emettrice : demande bien reçue ' + data)
     })
 

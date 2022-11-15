@@ -42,7 +42,7 @@ export class AppComponent implements OnInit {
      * le client écoute le serveur sur l'événement 'reponse' par le biais du service webSocket (méthode listen)
      * et récupère les données associées data
      */
-    this.webSocket.listen('response').subscribe((data) => {
+    this.webSocket.listen('reponse').subscribe((data) => {
       this._VarGlob.bandeauMessage = data;
     });
 
@@ -58,7 +58,9 @@ export class AppComponent implements OnInit {
      * le client envoie l'événement 'notification' au serveur par le bias du serveur webSocket (méthode emit)
      * et les données associées 'message du client'
      */
-    this.webSocket.emit('notification', 'message du client');
+    this.webSocket.emit('messageClient', 'message du client');
+    console.log('messageClient');
+
   }
 
   /** N'import où dans le traitement du composant, on peut trouver */
