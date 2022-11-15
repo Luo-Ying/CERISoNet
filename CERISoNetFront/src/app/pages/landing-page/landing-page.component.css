@@ -7,7 +7,7 @@
 }
 
 @media only screen and (min-width:800px) {
-    
+
     .block-comment {
         margin: auto;
         width: 80%;
@@ -32,6 +32,7 @@
 
 .hashtag {
     margin-right: 1%;
+    margin-top: 1%;
 }
 
 .justify-content-rigth {
@@ -45,9 +46,9 @@
 }
 
 .material-symbols-outlined {
-  font-variation-settings:
-  'FILL' 1,
-  'wght' 400,
-  'GRAD' 0,
-  'opsz' 48
+    font-variation-settings:
+        'FILL' 1,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 48
 }

@@ -54,9 +54,49 @@ const options = {
 }
 
 /**lancement du serveur https avec clé et certificat associé */
-let server = https.createServer(options, app).listen(3231, () => {
+const server = https.createServer(options, app).listen(3231, () => {
     console.log('HTTPS => listening on 3231')
 })
+
+/**
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
+
+/** Gestion des websockets côté serveur */
+const io = require('socket.io')(server);
+
+/** Gestion de la connection et des messages reçus de la part d'un client */
+io.on('connection', socketClient => {
+    /** Envoie d'un message à tous les client connectés */
+    io.emit('notification', 'le serveur communique avec l\'ensemble des clients connectés')
+
+    /** Envoie d'un message à tous les clients connectés excepté le client émetteur */
+    socketClient.broadcast.emit('notification', 'le serveur communique avec l\'ensemble des clients connectés excepté l\'émetteur de l\'événement <<notification>>')
+
+    /** Réception d'un message d'un client (event: 'messageClient', données: data) et renvoie d'une réponse */
+    socketClient.on('messageClient', data => {
+        socketClient.emit('reponse', 'serveur => socketClient emettrice : demande bien reçue ' + data)
+    })
+
+    /** Réception d'un message d'un clien(event: 'login', données: data) et renvoie d'une réponse */
+    socketClient.on('login', data => {
+        socketClient.emit('login', 'serveur => socketClient emettrice : demande bien reçu ' + data)
+    })
+})
+
+io.emit('notification', 'le serveur communique avec l\'ensemble des clients connectés')
+
+/**
+ * 
+ * 
+ * 
+ * 
+ */
 
 /**Route racine('/') du server */
 app.get('/', (req, res) => {

@@ -5,6 +5,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatPaginatorModule } from '@angular/material/paginator';
 
+import { WebSocketService } from './services/web-socket.service';
+import { DatabaseService } from './services/database.service';
+import { VarGlobService } from './services/var-glob.service';
+import { AuthentificationService } from './services/authentification.service';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BandeauComponent } from './components/bandeau/bandeau.component';
@@ -13,9 +18,6 @@ import { HeaderComponent } from './components/layout/header/header.component';
 import { FooterComponent } from './components/layout/footer/footer.component';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
 import { TitleCasePipePipe } from './pipes/title-case-pipe.pipe';
-import { DatabaseService } from './services/database.service';
-import { AuthentificationService } from './services/authentification.service';
-import { VarGlobService } from './services/var-glob.service';
 import { PostComponent } from './components/post/post.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommentComponent } from './components/comment/comment.component';
@@ -44,9 +46,10 @@ import { PostSharedComponent } from './components/post-shared/post-shared.compon
     MatPaginatorModule,
   ],
   providers: [  /**Déclaration des services utilisables / singleton */
+    WebSocketService,
     DatabaseService,
     AuthentificationService,
-    VarGlobService
+    VarGlobService,
   ],
   bootstrap: [AppComponent] /**  Déclaration du composant racine */
 })

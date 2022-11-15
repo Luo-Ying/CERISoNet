@@ -9,3 +9,8 @@ export function hourFormat(date: Date) {
     hourFormated += date.getHours() + ":" + date.getMinutes();
     return hourFormated;
 }
+
+export function transferDateToTimestamp(date: string) {
+    let datum = Date.parse(date);
+    return datum / 1000;
+}

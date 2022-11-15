@@ -20,7 +20,7 @@ export interface post {
     hashtags: Array<string>;
     hour: string;
     images: image;
-    likes: 5;
+    likes: number;
     likedby: Array<number>;
 }
 
