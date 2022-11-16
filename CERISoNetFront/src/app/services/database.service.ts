@@ -5,6 +5,7 @@ import { observable, Observable, Subscribable, Subscriber } from 'rxjs';
 import { post, author, comment } from 'src/app/util/type';
 import { dateFormat } from 'src/app/util/algorithm';
 import { Router } from '@angular/router';
+import { WebSocketService } from './web-socket.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,12 @@ export class DatabaseService {
 
   options = { headers: { 'Content-Type': 'application/json' } };
 
-  constructor(private _http: HttpClient) { }
+  constructor(
+    private _http: HttpClient,
+    private _webSocket: WebSocketService
+  ) {
+
+  }
 
   GetAllComments(hashtag: string): Observable<Array<post>> {
     let result: Array<post>;
@@ -98,35 +104,41 @@ export class DatabaseService {
     });
   }
 
-  AddComment(id_post: number, objComment: comment): Observable<boolean> {
-    let pass = false;
-    // let date = dateFormat(new Date());
-    // console.log(date);
+  // AddComment(id_post: number, objComment: comment): Observable<boolean> {
+  AddComment(id_post: number, objComment: comment) {
 
-    return Observable.create((observer: Subscriber<boolean>) => {
-      this._http.post<any>(
-        `https://pedago.univ-avignon.fr:3231/db-CERI/CERISoNet/addComment`,
-        { id_post: id_post, comment: objComment },
-        this.options
-      ).subscribe(
-        data => {
+    this._webSocket.emit('addComment', { id_post: id_post, comment: objComment });
 
-          if (data.modifiedCount) {
-            pass = true;
-          }
-          else {
-            pass = false
-          }
 
-        },
-        error => {
-          console.error('une erreur est survenu!', error);
-        },
-        () => { /** terminaison de l’observable httpClient */
-          observer.next(pass);  /** renvoi des données pour l’observable principal */
-        }
-      )
-    })
+
+    // let pass = false;
+    // // let date = dateFormat(new Date());
+    // // console.log(date);
+
+    // return Observable.create((observer: Subscriber<boolean>) => {
+    //   this._http.post<any>(
+    //     `https://pedago.univ-avignon.fr:3231/db-CERI/CERISoNet/addComment`,
+    //     { id_post: id_post, comment: objComment },
+    //     this.options
+    //   ).subscribe(
+    //     data => {
+
+    //       if (data.modifiedCount) {
+    //         pass = true;
+    //       }
+    //       else {
+    //         pass = false
+    //       }
+
+    //     },
+    //     error => {
+    //       console.error('une erreur est survenu!', error);
+    //     },
+    //     () => { /** terminaison de l’observable httpClient */
+    //       observer.next(pass);  /** renvoi des données pour l’observable principal */
+    //     }
+    //   )
+    // })
   }
 
   DeleteComment(id_post: number, commentText: string): Observable<boolean> {
