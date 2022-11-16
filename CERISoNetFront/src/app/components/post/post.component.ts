@@ -6,7 +6,6 @@ import { FormControl, FormGroup, NgForm } from '@angular/forms';
 import { comment, post, author } from 'src/app/util/type';
 import { dateFormat, hourFormat } from 'src/app/util/algorithm';
 import { Router } from '@angular/router';
-import { WebSocketService } from 'src/app/services/web-socket.service';
 
 @Component({
   selector: 'app-post',
@@ -42,16 +41,9 @@ export class PostComponent implements OnInit {
   constructor(
     private _database: DatabaseService,
     private _VarGlob: VarGlobService,
-    private _webSocket: WebSocketService,
-    private router: Router,
-  ) { }
+    private router: Router,) { }
 
   ngOnInit(): void {
-
-    this._webSocket.listen('commentUpdate').subscribe((data) => {
-      // this.comments = data
-      location.reload();
-    })
 
     this.id_user = Number(localStorage.getItem('id'));
     if (this.post) {
@@ -139,19 +131,18 @@ export class PostComponent implements OnInit {
         date: date,
         hour: hour,
       };
-      // this._database.AddComment(this.post._id, objComment).subscribe(
-      //   data => {
-      //     // this.author = data;
-      //     console.log("add comment!");
-      //     location.reload();
+      this._database.AddComment(this.post._id, objComment).subscribe(
+        data => {
+          // this.author = data;
+          console.log("add comment!");
+          location.reload();
 
-      //   },
-      //   error => {
-      //     console.log(error);
+        },
+        error => {
+          console.log(error);
 
-      //   }
-      // )
-      this._database.AddComment(this.post._id, objComment);
+        }
+      )
     }
     else {
       this.isSubmitedCommentEmpty = true;
