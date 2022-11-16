@@ -41,9 +41,9 @@
     margin-top: 2%;
 }
 
-.div-collapse {
+/* .div-collapse {
     margin-top: 1.5%;
-}
+} */
 
 .material-symbols-outlined {
     font-variation-settings:
@@ -51,4 +51,8 @@
         'wght' 400,
         'GRAD' 0,
         'opsz' 48
+}
+
+.orderby {
+    display: flex;
 }

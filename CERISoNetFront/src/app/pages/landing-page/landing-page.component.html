@@ -14,22 +14,24 @@
 
 <div class="block-comment">
 
-    <button type="button" class="btn btn-outline-primary ms-2" (click)="isCollapsed = !isCollapsed"
-        [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
-        <span class="material-symbols-outlined"> tune </span>
-    </button>
+    <div class="orderby">
+        <button type="button" class="btn btn-outline-primary ms-2" (click)="isCollapsed = !isCollapsed"
+            [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+            <span class="material-symbols-outlined"> tune </span>
+        </button>
 
-    <div #collapse="ngbCollapse" [(ngbCollapse)]="!isCollapsed" [horizontal]="true" class="div-collapse">
-        <button class="btn btn-outline-primary ms-2" (click)="getCommentsOrderByNbLike()">
-            <span class="material-symbols-outlined"> favorite </span>
-            <span *ngIf="this.isOrderByNbLikesAscending==false" class="material-symbols-outlined"> south </span>
-            <span *ngIf="this.isOrderByNbLikesAscending" class="material-symbols-outlined"> north </span>
-        </button>
-        <button class="btn btn-outline-primary ms-2" (click)="getCommentsOrderByDate()">
-            <span class="material-symbols-outlined"> event </span>
-            <span *ngIf="this.isOrderByDateAscending==false" class="material-symbols-outlined"> south </span>
-            <span *ngIf="this.isOrderByDateAscending" class="material-symbols-outlined"> north </span>
-        </button>
+        <div #collapse="ngbCollapse" [(ngbCollapse)]="!isCollapsed" class="div-collapse">
+            <button class="btn btn-outline-primary ms-2" (click)="getCommentsOrderByNbLike()">
+                <span class="material-symbols-outlined"> favorite </span>
+                <span *ngIf="this.isOrderByNbLikesAscending==false" class="material-symbols-outlined"> south </span>
+                <span *ngIf="this.isOrderByNbLikesAscending" class="material-symbols-outlined"> north </span>
+            </button>
+            <button class="btn btn-outline-primary ms-2" (click)="getCommentsOrderByDate()">
+                <span class="material-symbols-outlined"> event </span>
+                <span *ngIf="this.isOrderByDateAscending==false" class="material-symbols-outlined"> south </span>
+                <span *ngIf="this.isOrderByDateAscending" class="material-symbols-outlined"> north </span>
+            </button>
+        </div>
     </div>
 
     <br><br>

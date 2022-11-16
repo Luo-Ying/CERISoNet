@@ -86,9 +86,13 @@ export class DatabaseService {
         this.options
       ).subscribe(
         data => {
+          console.log("okok");
+
           pass = data;
         },
         error => {
+          console.log("update like failed!");
+
           console.error('une erreur est survenu!', error);
         },
         () => { /** terminaison de l’observable httpClient */

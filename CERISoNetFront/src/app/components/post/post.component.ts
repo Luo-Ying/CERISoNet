@@ -6,6 +6,7 @@ import { FormControl, FormGroup, NgForm } from '@angular/forms';
 import { comment, post, author } from 'src/app/util/type';
 import { dateFormat, hourFormat } from 'src/app/util/algorithm';
 import { Router } from '@angular/router';
+import { WebSocketService } from 'src/app/services/web-socket.service';
 
 @Component({
   selector: 'app-post',
@@ -41,30 +42,40 @@ export class PostComponent implements OnInit {
   constructor(
     private _database: DatabaseService,
     private _VarGlob: VarGlobService,
-    private router: Router,) { }
+    private router: Router,
+    private _webSocket: WebSocketService
+  ) { }
 
   ngOnInit(): void {
 
     this.id_user = Number(localStorage.getItem('id'));
+
+    this._webSocket.listen('updateLike').subscribe((data) => {
+      console.log(data);
+    })
+
     if (this.post) {
       this.nbLike = this.post.likes;
       if (this.post.likedby) {
+        console.log("id user: ", this.id_user);
+        console.log(this.post.likedby.indexOf(this.id_user));
+
+
         if (this.post.likedby.indexOf(this.id_user) == -1) {
           this.isLiked = false;
         } else {
           this.isLiked = true;
         }
+        console.log(this.isLiked);
+
       }
 
       this._database.GetInfosUserById(this.post.createdBy).subscribe(
         data => {
           this.author = data;
-          // console.log(data);
-
         },
         error => {
           console.log(error);
-
         }
       );
 
@@ -86,36 +97,29 @@ export class PostComponent implements OnInit {
   }
 
   like(): void {
-    // console.log("coucou");
     this.nbLike++;
     this.isLiked = !this.isLiked;
-    this._database.LikePost(this.post._id, this.id_user, this.nbLike, this.isLiked).subscribe(
-      data => {
-        // this.author = data;
-        // console.log(data);
-
-      },
-      error => {
-        console.log(error);
-
-      }
-    );
+    /** */
+    this._webSocket.emit('updateLike',
+      {
+        id_post: this.post._id,
+        id_user: this.id_user,
+        nbLike: this.nbLike,
+        isLiked: this.isLiked
+      });
   }
 
   dislike(): void {
     this.nbLike--;
     this.isLiked = !this.isLiked;
-    this._database.LikePost(this.post._id, this.id_user, this.nbLike, this.isLiked).subscribe(
-      data => {
-        // this.author = data;
-        // console.log(data);
-
-      },
-      error => {
-        console.log(error);
-
-      }
-    );
+    /** */
+    this._webSocket.emit('updateLike',
+      {
+        id_post: this.post._id,
+        id_user: this.id_user,
+        nbLike: this.nbLike,
+        isLiked: this.isLiked
+      });
   }
 
   onSubmit() {

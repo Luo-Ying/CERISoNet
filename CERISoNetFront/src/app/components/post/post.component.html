@@ -27,8 +27,8 @@
         <br>
         <div class="group-icon-comment">
             <span *ngIf="!this.isLiked" (click)="like()" class="material-symbols-outlined"> thumb_up </span>
-            <span *ngIf="this.isLiked" (click)="dislike()" class="material-symbols-outlined"> thumb_up </span>
-            <!-- <span *ngIf="this.isLiked" (click)="dislike()" class="material-symbols-outlined isLiked"> recommend </span> -->
+            <span *ngIf="this.isLiked" (click)="dislike()" class="material-symbols-outlined thumb_up-liked"> thumb_up
+            </span>
             <span class="material-symbols-outlined"> sms </span>
             <span class="material-symbols-outlined"> google_plus_reshare </span>
         </div>

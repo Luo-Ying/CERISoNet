@@ -92,6 +92,52 @@ io.on('connection', socketClient => {
     socketClient.on('login', data => {
         socketClient.emit('login', 'serveur => socketClient emettrice : demande bien reçu ' + data)
     })
+
+    socketClient.on('updateLike', data => {
+        const id_post = data.id_post;
+        const id_user = data.id_user;
+        const nbLike = data.nbLike;
+        const isLiked = data.isLiked;
+        // console.log(typeof nbLike);
+        /**Connexion MongoDB */
+        MongoClient.connect(dsn_dbmongo, { useNewUrlParser: true, useUnifiedTopology: true }, (err, mongoClient) => {
+            if (err) {
+                return console.log('erreur connexion base de données');
+            }
+            if (mongoClient) {
+                /**Exécution des requêtes - findAll*/
+                mongoClient.db().collection('CERISoNet').updateOne({ "_id": id_post }, { $set: { "likes": nbLike } })
+                if (isLiked) {
+                    mongoClient.db().collection('CERISoNet').updateOne({ "_id": id_post }, { $addToSet: { "likedby": id_user } }, (err, data) => {
+
+                        if (err) {
+                            return console.log('erreur base de données')
+                        }
+                        if (data) {
+                            mongoClient.close() /**Fermeture de la connexion */
+                            // res.send(data) /**renvoi du résultat comme réponse de la requête */
+                            socketClient.emit('updateLike', data)
+                        }
+                    })
+                } else {
+                    mongoClient.db().collection('CERISoNet').updateOne({ "_id": id_post }, { $pull: { "likedby": id_user } }, (err, data) => {
+
+                        if (err) {
+                            return console.log('erreur base de données')
+                        }
+                        if (data) {
+                            mongoClient.close() /**Fermeture de la connexion */
+                            // res.send(data) /**renvoi du résultat comme réponse de la requête */
+                            socketClient.emit('updateLike', data)
+                        }
+                    })
+                }
+                // mongoClient.close()
+                // res.sendStatus(200)
+            }
+        })
+    })
+
 })
 
 io.emit('notification', 'le serveur communique avec l\'ensemble des clients connectés')
@@ -208,6 +254,18 @@ app.get('/disconnect', (req, res) => {
 })
 
 const getAllComments = (mongoClient, res) => {
+    // const changeStreamComments = mongoClient.db().collection('CERISoNet').watch()
+    // changeStreamComments.on("change", next => {
+    //     next.find().project({}).toArray((err, data) => {
+    //         if (err) {
+    //             return console.log('erreur base de données')
+    //         }
+    //         if (data) {
+    //             mongoClient.close() /**Fermeture de la connexion */
+    //             res.send(data) /**renvoi du résultat comme réponse de la requête */
+    //         }
+    //     })
+    // })
     mongoClient.db().collection('CERISoNet').find().project({}).toArray((err, data) => {
         if (err) {
             return console.log('erreur base de données')
@@ -239,6 +297,8 @@ app.get('/db-CERI/CERISoNet', (req, res) => {
             return console.log('erreur connexion base de données');
         }
         if (mongoClient) {
+            const changeStreamCERISoNet = mongoClient.db().collection('CERISoNet').watch()
+
             /**Exécution des requêtes - findAll*/
             if (hashtag != "all") {
                 getCommentsFilterByHashtag(mongoClient, hashtag, res);
@@ -311,30 +371,48 @@ app.get('/db-CERI/CERISoNet/searchPost', (req, res) => {
 
 
 // TODO: Demande pour la list 'likedby' dans BD
-app.post('/db-CERI/CERISoNet/updateLikedby', (req, res) => {
-    const id_post = req.body.id_post;
-    const id_user = req.body.id_user;
-    const nbLike = req.body.nbLike;
-    const isLiked = req.body.isLiked;
-    // console.log(typeof nbLike);
-    /**Connexion MongoDB */
-    MongoClient.connect(dsn_dbmongo, { useNewUrlParser: true, useUnifiedTopology: true }, (err, mongoClient) => {
-        if (err) {
-            return console.log('erreur connexion base de données');
-        }
-        if (mongoClient) {
-            /**Exécution des requêtes - findAll*/
-            mongoClient.db().collection('CERISoNet').updateOne({ "_id": id_post }, { $set: { "likes": nbLike } })
-            if (isLiked) {
-                mongoClient.db().collection('CERISoNet').updateOne({ "_id": id_post }, { $addToSet: { "likedby": id_user } })
-            } else {
-                mongoClient.db().collection('CERISoNet').updateOne({ "_id": id_post }, { $pull: { "likedby": id_user } })
-            }
-            // mongoClient.close()
-            res.sendStatus(200)
-        }
-    })
-})
+// app.post('/db-CERI/CERISoNet/updateLikedby', (req, res) => {
+//     const id_post = req.body.id_post;
+//     const id_user = req.body.id_user;
+//     const nbLike = req.body.nbLike;
+//     const isLiked = req.body.isLiked;
+//     // console.log(typeof nbLike);
+//     /**Connexion MongoDB */
+//     MongoClient.connect(dsn_dbmongo, { useNewUrlParser: true, useUnifiedTopology: true }, (err, mongoClient) => {
+//         if (err) {
+//             return console.log('erreur connexion base de données');
+//         }
+//         if (mongoClient) {
+//             /**Exécution des requêtes - findAll*/
+//             mongoClient.db().collection('CERISoNet').updateOne({ "_id": id_post }, { $set: { "likes": nbLike } })
+//             if (isLiked) {
+//                 mongoClient.db().collection('CERISoNet').updateOne({ "_id": id_post }, { $addToSet: { "likedby": id_user } }, (err, data) => {
+
+//                     if (err) {
+//                         return console.log('erreur base de données')
+//                     }
+//                     if (data) {
+//                         mongoClient.close() /**Fermeture de la connexion */
+//                         res.send(data) /**renvoi du résultat comme réponse de la requête */
+//                     }
+//                 })
+//             } else {
+//                 mongoClient.db().collection('CERISoNet').updateOne({ "_id": id_post }, { $pull: { "likedby": id_user } }, (err, data) => {
+
+//                     if (err) {
+//                         return console.log('erreur base de données')
+//                     }
+//                     if (data) {
+//                         mongoClient.close() /**Fermeture de la connexion */
+//                         res.send(data) /**renvoi du résultat comme réponse de la requête */
+//                     }
+//                 })
+//             }
+//             // mongoClient.close()
+//             // res.sendStatus(200)
+//         }
+//     })
+// })
 
 // TODO: Faire la requête du partage du post!
 
