@@ -15,7 +15,7 @@ import { WebSocketService } from './services/web-socket.service';
 export class AppComponent implements OnInit {
 
   /** declaration des variables propres au composant */
-  webSocket: WebSocketService = new WebSocketService;
+  // webSocket: WebSocketService = new WebSocketService;
 
   title = 'CERISoNet';
   // heading: string;
@@ -32,9 +32,8 @@ export class AppComponent implements OnInit {
     this._auth = _auth;
     this._VarGlob = _VarGlob;
     /** Appel du service WebSocketService */
-    this.webSocket = _webSocket;
     /** Envoie d'un événement au serveur */
-    this.webSocket.emit('login', 'Bonjour Serveur!');
+    // this._webSocket.emit('login', 'Bonjour Serveur!');
   }
 
   ngOnInit(): void {
@@ -42,24 +41,28 @@ export class AppComponent implements OnInit {
      * le client écoute le serveur sur l'événement 'reponse' par le biais du service webSocket (méthode listen)
      * et récupère les données associées data
      */
-    this.webSocket.listen('reponse').subscribe((data) => {
-      this._VarGlob.bandeauMessage = data;
-    });
+    // this._webSocket.listen('reponse').subscribe((data) => {
+    //   this._VarGlob.bandeauMessage = data;
+    // });
 
     /** 
      * le client envoie l'événement 'login' au serveur par le bias du service sebSocket (méthode emit) 
      * et les données associées 'message du client'
     */
-    this.webSocket.listen('login').subscribe((data) => {
-      alert(data);
-    })
+    // this._webSocket.listen('login').subscribe((data) => {
+    //   alert(data);
+    // })
 
     /**
      * le client envoie l'événement 'notification' au serveur par le bias du serveur webSocket (méthode emit)
      * et les données associées 'message du client'
      */
-    this.webSocket.emit('messageClient', 'message du client');
-    console.log('messageClient');
+    // this._webSocket.emit('messageClient', 'message du client');
+    // console.log('messageClient');
+
+    // this._webSocket.listen('messageClient').subscribe((data) => {
+    //   alert(data);
+    // })
 
   }
 

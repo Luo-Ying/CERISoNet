@@ -83,22 +83,21 @@ io.on('connection', socketClient => {
     socketClient.broadcast.emit('notification', 'le serveur communique avec l\'ensemble des clients connectés excepté l\'émetteur de l\'événement <<notification>>')
 
     /** Réception d'un message d'un client (event: 'messageClient', données: data) et renvoie d'une réponse */
-    socketClient.on('messageClient', data => {
-        console.log('messageClient')
-        socketClient.emit('reponse', 'serveur => socketClient emettrice : demande bien reçue ' + data)
-    })
+    // socketClient.on('messageClient', data => {
+    //     console.log('messageClient')
+    //     socketClient.emit('messageClient', 'serveur => socketClient emettrice : demande bien reçue ' + data)
+    // })
 
     /** Réception d'un message d'un clien(event: 'login', données: data) et renvoie d'une réponse */
-    socketClient.on('login', data => {
-        socketClient.emit('login', 'serveur => socketClient emettrice : demande bien reçu ' + data)
-    })
+    // socketClient.on('login', data => {
+    //     socketClient.emit('login', 'serveur => socketClient emettrice : demande bien reçu ' + data)
+    // })
 
     socketClient.on('updateLike', data => {
         const id_post = data.id_post;
         const id_user = data.id_user;
         const nbLike = data.nbLike;
         const isLiked = data.isLiked;
-        // console.log(typeof nbLike);
         /**Connexion MongoDB */
         MongoClient.connect(dsn_dbmongo, { useNewUrlParser: true, useUnifiedTopology: true }, (err, mongoClient) => {
             if (err) {
@@ -114,9 +113,15 @@ io.on('connection', socketClient => {
                             return console.log('erreur base de données')
                         }
                         if (data) {
-                            mongoClient.close() /**Fermeture de la connexion */
-                            // res.send(data) /**renvoi du résultat comme réponse de la requête */
-                            socketClient.emit('updateLike', data)
+                            mongoClient.db().collection('CERISoNet').findOne({ "_id": id_post }, (err, data) => {
+                                if (err) {
+                                    return console.log('erreur base de données')
+                                }
+                                if (data) {
+                                    mongoClient.close() /**Fermeture de la connexion */
+                                    socketClient.broadcast.emit('updateLike', data)
+                                }
+                            })
                         }
                     })
                 } else {
@@ -126,14 +131,62 @@ io.on('connection', socketClient => {
                             return console.log('erreur base de données')
                         }
                         if (data) {
-                            mongoClient.close() /**Fermeture de la connexion */
-                            // res.send(data) /**renvoi du résultat comme réponse de la requête */
-                            socketClient.emit('updateLike', data)
+                            // mongoClient.close() /**Fermeture de la connexion */
+                            mongoClient.db().collection('CERISoNet').findOne({ "_id": id_post }, (err, data) => {
+                                if (err) {
+                                    return console.log('erreur base de données')
+                                }
+                                if (data) {
+                                    mongoClient.close() /**Fermeture de la connexion */
+                                    socketClient.broadcast.emit('updateLike', data)
+                                }
+                            })
+                            // socketClient.broadcast.emit('updateLike', data)
                         }
                     })
                 }
-                // mongoClient.close()
-                // res.sendStatus(200)
+            }
+        })
+    })
+
+    socketClient.on('addComment', data => {
+        const id_post = data.id_post
+        const comment = data.comment;
+        // console.log(typeof nbLike);
+        console.log(comment.commentedBy);
+        /**Connexion MongoDB */
+        MongoClient.connect(dsn_dbmongo, { useNewUrlParser: true, useUnifiedTopology: true }, (err, mongoClient) => {
+            if (err) {
+                return console.log('erreur connexion base de données');
+            }
+            if (mongoClient) {
+                const objComment = {
+                    "text": comment.text,
+                    "commentedBy": comment.commentedBy,
+                    "date": comment.date,
+                    "hour": comment.hour
+                }
+                /**Exécution des requêtes - findAll*/
+                mongoClient.db().collection('CERISoNet').updateOne({ "_id": id_post }, { $addToSet: { "comments": objComment } }, (err, data) => {
+
+                    if (err) {
+                        return console.log('erreur base de données')
+                    }
+                    if (data) {
+                        // console.log("Commetnaire ajouter")
+                        // mongoClient.close() /**Fermeture de la connexion */
+                        // res.send(data) /**renvoi du résultat comme réponse de la requête */
+                        mongoClient.db().collection('CERISoNet').findOne({ "_id": id_post }, (err, data) => {
+                            if (err) {
+                                return console.log('erreur base de données')
+                            }
+                            if (data) {
+                                mongoClient.close() /**Fermeture de la connexion */
+                                socketClient.broadcast.emit('addComment', data)
+                            }
+                        })
+                    }
+                })
             }
         })
     })
@@ -416,38 +469,38 @@ app.get('/db-CERI/CERISoNet/searchPost', (req, res) => {
 
 // TODO: Faire la requête du partage du post!
 
-app.post('/db-CERI/CERISoNet/addComment', (req, res) => {
-    const id_post = req.body.id_post
-    const comment = req.body.comment;
-    // console.log(typeof nbLike);
-    console.log(comment.commentedBy);
-    /**Connexion MongoDB */
-    MongoClient.connect(dsn_dbmongo, { useNewUrlParser: true, useUnifiedTopology: true }, (err, mongoClient) => {
-        if (err) {
-            return console.log('erreur connexion base de données');
-        }
-        if (mongoClient) {
-            const objComment = {
-                "text": comment.text,
-                "commentedBy": comment.commentedBy,
-                "date": comment.date,
-                "hour": comment.hour
-            }
-            /**Exécution des requêtes - findAll*/
-            mongoClient.db().collection('CERISoNet').updateOne({ "_id": id_post }, { $addToSet: { "comments": objComment } }, (err, data) => {
+// app.post('/db-CERI/CERISoNet/addComment', (req, res) => {
+//     const id_post = req.body.id_post
+//     const comment = req.body.comment;
+//     // console.log(typeof nbLike);
+//     console.log(comment.commentedBy);
+//     /**Connexion MongoDB */
+//     MongoClient.connect(dsn_dbmongo, { useNewUrlParser: true, useUnifiedTopology: true }, (err, mongoClient) => {
+//         if (err) {
+//             return console.log('erreur connexion base de données');
+//         }
+//         if (mongoClient) {
+//             const objComment = {
+//                 "text": comment.text,
+//                 "commentedBy": comment.commentedBy,
+//                 "date": comment.date,
+//                 "hour": comment.hour
+//             }
+//             /**Exécution des requêtes - findAll*/
+//             mongoClient.db().collection('CERISoNet').updateOne({ "_id": id_post }, { $addToSet: { "comments": objComment } }, (err, data) => {
 
-                if (err) {
-                    return console.log('erreur base de données')
-                }
-                if (data) {
-                    // console.log("Commetnaire ajouter")
-                    mongoClient.close() /**Fermeture de la connexion */
-                    res.send(data) /**renvoi du résultat comme réponse de la requête */
-                }
-            })
-        }
-    })
-})
+//                 if (err) {
+//                     return console.log('erreur base de données')
+//                 }
+//                 if (data) {
+//                     // console.log("Commetnaire ajouter")
+//                     mongoClient.close() /**Fermeture de la connexion */
+//                     res.send(data) /**renvoi du résultat comme réponse de la requête */
+//                 }
+//             })
+//         }
+//     })
+// })
 
 app.post('/db-CERI/CERISoNet/deleteComment', (req, res) => {
     const id_post = req.body.id_post

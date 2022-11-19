@@ -22,6 +22,7 @@
             <p *ngIf="this.post.images"><img src={{this.post.images.url}} alt="[image not found]" class="image"></p>
         </div>
         <div *ngIf="this.post.Shared" class="post-shared">
+            <p class="label-post-shared">partagé depuis</p>
             <app-post-shared [idPost]="this.post.Shared"></app-post-shared>
         </div>
         <br>
@@ -30,7 +31,9 @@
             <span *ngIf="this.isLiked" (click)="dislike()" class="material-symbols-outlined thumb_up-liked"> thumb_up
             </span>
             <span class="material-symbols-outlined"> sms </span>
-            <span class="material-symbols-outlined"> google_plus_reshare </span>
+            <span (click)="openSharePostModal(longContent)" class="material-symbols-outlined">
+                google_plus_reshare
+            </span>
         </div>
         <hr>
         <span class="material-symbols-outlined"> recommend </span>
@@ -53,3 +56,18 @@
     </div>
 </div>
 <br>
+
+<ng-template #longContent let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">Partager Post</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <app-post-shared *ngIf="this.post.Shared == undefined" [idPost]="this.post._id"></app-post-shared>
+        <app-post-shared *ngIf="this.post.Shared" [idPost]="this.post.Shared"></app-post-shared>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Annuler</button>
+        <button type="button" class="btn btn-light btn-partage" (click)="modal.close('Close click')">Partager</button>
+    </div>
+</ng-template>

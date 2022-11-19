@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { DatabaseService } from 'src/app/services/database.service';
 import { VarGlobService } from 'src/app/services/var-glob.service';
 import { FormControl, FormGroup, NgForm } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { comment, post, author } from 'src/app/util/type';
 import { dateFormat, hourFormat } from 'src/app/util/algorithm';
@@ -43,7 +44,8 @@ export class PostComponent implements OnInit {
     private _database: DatabaseService,
     private _VarGlob: VarGlobService,
     private router: Router,
-    private _webSocket: WebSocketService
+    private _webSocket: WebSocketService,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit(): void {
@@ -52,6 +54,16 @@ export class PostComponent implements OnInit {
 
     this._webSocket.listen('updateLike').subscribe((data) => {
       console.log(data);
+      this.nbLike = data.likes;
+    })
+
+    this._webSocket.listen('addComment').subscribe((data) => {
+      // console.log(data);
+      this.comments = data.comments;
+    })
+
+    this._webSocket.listen('messageClient').subscribe((data) => {
+      alert(data);
     })
 
     if (this.post) {
@@ -80,11 +92,7 @@ export class PostComponent implements OnInit {
       );
 
       if (this.post.comments.length > 0) {
-        // console.log(this.post.comments);
-
         this.post.comments.forEach(element => {
-          // console.log(element);
-
           this.comments.push(element);
         });
       }
@@ -122,6 +130,19 @@ export class PostComponent implements OnInit {
       });
   }
 
+  openSharePostModal(longContent: any): void {
+    this.modalService.open(longContent, {
+      windowClass: 'modal-class',
+      scrollable: true,
+      backdrop: false,
+      size: 'lg',
+      centered: true,
+      animation: true
+    });
+  }
+
+
+
   onSubmit() {
     console.log("submit!");
     console.log(this.formData.value.comment);
@@ -135,23 +156,16 @@ export class PostComponent implements OnInit {
         date: date,
         hour: hour,
       };
-      this._database.AddComment(this.post._id, objComment).subscribe(
-        data => {
-          // this.author = data;
-          console.log("add comment!");
-          location.reload();
 
-        },
-        error => {
-          console.log(error);
-
-        }
-      )
+      this._webSocket.emit('addComment',
+        {
+          id_post: this.post._id,
+          comment: objComment
+        });
     }
     else {
       this.isSubmitedCommentEmpty = true;
     }
-    // location.reload();
   }
 
 }

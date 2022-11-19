@@ -8,6 +8,7 @@ import { DatabaseService } from 'src/app/services/database.service';
 import { VarGlobService } from 'src/app/services/var-glob.service';
 import { comment, post } from 'src/app/util/type';
 import { transferDateToTimestamp } from 'src/app/util/algorithm';
+import { WebSocketService } from 'src/app/services/web-socket.service';
 
 @Component({
   selector: 'app-landing-page',
@@ -33,7 +34,7 @@ export class LandingPageComponent implements OnInit {
     private router: Router,
     private _auth: AuthentificationService,
     private _VarGlob: VarGlobService,
-    private _database: DatabaseService
+    private _database: DatabaseService,
   ) { }
 
   ngOnInit(): void {
@@ -50,8 +51,6 @@ export class LandingPageComponent implements OnInit {
     }
 
   }
-  // TODO: trier côté fronend ? (peut fonctionner ensemble avec filter du hashtag) 
-  // trier côté backend ? (fonctionne séparément avec filtre du hashtag)
 
   /**tri à bulles */
   sortPostsByNbLikeDescendingorder(): void {

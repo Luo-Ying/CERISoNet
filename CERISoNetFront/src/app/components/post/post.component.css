@@ -21,6 +21,11 @@
         width: 50%;  
         height: 50%;
     }
+
+    ::ng-deep .modal-class .modal-dialog {
+        max-width: 95%;
+        width: 95%;
+    }
 }
 
 @media only screen and (min-width:800px) {
@@ -34,6 +39,7 @@
         width: 20%;  
         height: 20%;
     }
+
 }
 
 .avatar {
@@ -105,4 +111,25 @@
   'wght' 400,
   'GRAD' 0,
   'opsz' 48
+}
+
+.modal-post-to-share{
+    z-index: 1099;
+}
+
+.modal-title {
+    color:rgb(152, 153, 153);
+}
+
+.btn-partage {
+    background-color: rgb(231, 205, 181);
+}
+
+.btn-partage:hover {
+    background-color: rgb(231, 186, 145);
+}
+
+.label-post-shared {
+    margin-left: 6%;
+    color: rgb(175, 172, 172);
 }
