@@ -259,7 +259,8 @@ io.on('connection', socketClient => {
                     "date": objPost.date,
                     "hour": objPost.hour,
                     "createdBy": objPost.createdBy,
-                    "Shared": objPost.Shared,
+                    "Shared": objPost.Shared ? objPost.Shared : "",
+                    "body": objPost.body,
                     "likes": objPost.likes,
                     "comments": []
                 }
@@ -275,7 +276,7 @@ io.on('connection', socketClient => {
                             }
                             if (data) {
                                 mongoClient.close() /**Fermeture de la connexion */
-                                io.broadcast.emit('updatePosts', data)
+                                io.emit('updatePosts', data)
                             }
                         })
                     }
@@ -501,32 +502,5 @@ app.get('/db-CERI/CERISoNet/searchPost', (req, res) => {
         }
     })
 })
-
-// app.post('/db-CERI/CERISoNet/deleteComment', (req, res) => {
-//     const id_post = req.body.id_post
-//     const text = req.body.commentText;
-//     // console.log(typeof nbLike);
-//     // console.log(comment.commentedBy);
-//     /**Connexion MongoDB */
-//     MongoClient.connect(dsn_dbmongo, { useNewUrlParser: true, useUnifiedTopology: true }, (err, mongoClient) => {
-//         if (err) {
-//             return console.log('erreur connexion base de données');
-//         }
-//         if (mongoClient) {
-//             /**Exécution des requêtes - findAll*/
-//             mongoClient.db().collection('CERISoNet').updateOne({ "_id": id_post }, { $pull: { "comments": { "text": text } } }, (err, data) => {
-
-//                 if (err) {
-//                     return console.log('erreur base de données')
-//                 }
-//                 if (data) {
-//                     // console.log("Commetnaire ajouter")
-//                     mongoClient.close() /**Fermeture de la connexion */
-//                     res.send(data) /**renvoi du résultat comme réponse de la requête */
-//                 }
-//             })
-//         }
-//     })
-// })
 
 // TODO: Gestion des notifications de connexion et de déconnexion des internautes par l'utilisation de WebSockets

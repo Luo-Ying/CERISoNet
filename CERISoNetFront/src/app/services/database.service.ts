@@ -133,35 +133,35 @@ export class DatabaseService {
     })
   }
 
-  DeleteComment(id_post: number, commentText: string): Observable<boolean> {
-    let pass = false;
-    // let date = dateFormat(new Date());
-    // console.log(date);
+  // DeleteComment(id_post: number, commentText: string): Observable<boolean> {
+  //   let pass = false;
+  //   // let date = dateFormat(new Date());
+  //   // console.log(date);
 
-    return Observable.create((observer: Subscriber<boolean>) => {
-      this._http.post<any>(
-        `https://pedago.univ-avignon.fr:3231/db-CERI/CERISoNet/deleteComment`,
-        { id_post: id_post, commentText: commentText },
-        this.options
-      ).subscribe(
-        data => {
+  //   return Observable.create((observer: Subscriber<boolean>) => {
+  //     this._http.post<any>(
+  //       `https://pedago.univ-avignon.fr:3231/db-CERI/CERISoNet/deleteComment`,
+  //       { id_post: id_post, commentText: commentText },
+  //       this.options
+  //     ).subscribe(
+  //       data => {
 
-          if (data.modifiedCount) {
-            pass = true;
-          }
-          else {
-            pass = false
-          }
+  //         if (data.modifiedCount) {
+  //           pass = true;
+  //         }
+  //         else {
+  //           pass = false
+  //         }
 
-        },
-        error => {
-          console.error('une erreur est survenu!', error);
-        },
-        () => { /** terminaison de l’observable httpClient */
-          observer.next(pass);  /** renvoi des données pour l’observable principal */
-        }
-      )
-    })
-  }
+  //       },
+  //       error => {
+  //         console.error('une erreur est survenu!', error);
+  //       },
+  //       () => { /** terminaison de l’observable httpClient */
+  //         observer.next(pass);  /** renvoi des données pour l’observable principal */
+  //       }
+  //     )
+  //   })
+  // }
 
 }

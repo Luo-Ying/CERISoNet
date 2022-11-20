@@ -151,25 +151,18 @@ export class PostComponent implements OnInit {
     this._webSocket.emit('getMaxPostId', {});
   }
 
-  confirmSharePost(): void {
-    console.log(this.maxId);
-
-    this.post.Shared
-      ? console.log(this.post.Shared)
-      : console.log(this.post._id);
+  confirmSharePost(body: string): void {
+    // TODO: aussi filtre les posts partagé avec les hashyags??
     let objPost = {
       _id: this.maxId + 1,
       date: dateFormat(new Date()),
       hour: hourFormat(new Date()),
       createdBy: this.id_user,
       Shared: this.post.Shared ? this.post.Shared : this.post._id,
+      body: body ? body : "",
       likes: 0,
       comments: []
     };
-    // console.log(new Date());
-    // console.log(dateFormat(new Date()));
-
-    console.log(objPost);
 
     this._webSocket.emit('sharePost',
       {

@@ -36,11 +36,6 @@ export class CommentComponent implements OnInit {
       this._database.GetInfosUserById(this.comment.commentedBy).subscribe(
         data => {
           this.author = data;
-          // console.log(data);
-          // console.log(data.identifiant);
-
-          // console.log(data.avatar);
-
         },
         error => {
           console.log(error);
@@ -60,19 +55,6 @@ export class CommentComponent implements OnInit {
           id_post: this.idPost,
           commentText: this.comment.text
         });
-
-      // this._database.DeleteComment(this.idPost, this.comment.text).subscribe(
-      //   data => {
-      //     // this.author = data;
-      //     console.log("delete comment!");
-      //     location.reload();
-
-      //   },
-      //   error => {
-      //     console.log(error);
-
-      //   }
-      // )
     }
   }
 

@@ -133,3 +133,10 @@
     margin-left: 6%;
     color: rgb(175, 172, 172);
 }
+
+.textbody-sharepost {
+    margin-left: 1.75rem;
+    margin-bottom: 1%;
+    width: 88%;
+    padding: 1rem;
+}
