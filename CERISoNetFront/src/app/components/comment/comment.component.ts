@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DatabaseService } from 'src/app/services/database.service';
+import { WebSocketService } from 'src/app/services/web-socket.service';
 import { comment, author } from 'src/app/util/type';
 
 @Component({
@@ -21,7 +22,10 @@ export class CommentComponent implements OnInit {
 
   avatarEmpty = "https://upload.wikimedia.org/wikipedia/commons/2/2c/Default_pfp.svg";
 
-  constructor(private _database: DatabaseService) {
+  constructor(
+    private _database: DatabaseService,
+    private _webSocket: WebSocketService,
+  ) {
     this.idUser = Number(localStorage.getItem("id"));
   }
 
@@ -51,18 +55,24 @@ export class CommentComponent implements OnInit {
     if (this.comment) {
       console.log(typeof this.comment.text);
       console.log(this.idPost);
-      this._database.DeleteComment(this.idPost, this.comment.text).subscribe(
-        data => {
-          // this.author = data;
-          console.log("delete comment!");
-          location.reload();
+      this._webSocket.emit('deleteComment',
+        {
+          id_post: this.idPost,
+          commentText: this.comment.text
+        });
 
-        },
-        error => {
-          console.log(error);
+      // this._database.DeleteComment(this.idPost, this.comment.text).subscribe(
+      //   data => {
+      //     // this.author = data;
+      //     console.log("delete comment!");
+      //     location.reload();
 
-        }
-      )
+      //   },
+      //   error => {
+      //     console.log(error);
+
+      //   }
+      // )
     }
   }
 

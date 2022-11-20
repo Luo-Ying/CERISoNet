@@ -40,6 +40,8 @@ export class PostComponent implements OnInit {
 
   isSubmitedCommentEmpty: boolean = false;
 
+  maxId!: number;
+
   constructor(
     private _database: DatabaseService,
     private _VarGlob: VarGlobService,
@@ -57,14 +59,21 @@ export class PostComponent implements OnInit {
       this.nbLike = data.likes;
     })
 
-    this._webSocket.listen('addComment').subscribe((data) => {
-      // console.log(data);
+    this._webSocket.listen('updateComments').subscribe((data) => {
+      console.log("listning...");
+
+      console.log(data);
       this.comments = data.comments;
+    })
+
+    this._webSocket.listen('sendMaxId').subscribe((data) => {
+      this.maxId = data[0]._id;
     })
 
     this._webSocket.listen('messageClient').subscribe((data) => {
       alert(data);
     })
+
 
     if (this.post) {
       this.nbLike = this.post.likes;
@@ -139,9 +148,34 @@ export class PostComponent implements OnInit {
       centered: true,
       animation: true
     });
+    this._webSocket.emit('getMaxPostId', {});
   }
 
+  confirmSharePost(): void {
+    console.log(this.maxId);
 
+    this.post.Shared
+      ? console.log(this.post.Shared)
+      : console.log(this.post._id);
+    let objPost = {
+      _id: this.maxId + 1,
+      date: dateFormat(new Date()),
+      hour: hourFormat(new Date()),
+      createdBy: this.id_user,
+      Shared: this.post.Shared ? this.post.Shared : this.post._id,
+      likes: 0,
+      comments: []
+    };
+    // console.log(new Date());
+    // console.log(dateFormat(new Date()));
+
+    console.log(objPost);
+
+    this._webSocket.emit('sharePost',
+      {
+        objPost: objPost
+      });
+  }
 
   onSubmit() {
     console.log("submit!");

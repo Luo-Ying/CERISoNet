@@ -68,6 +68,7 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Annuler</button>
-        <button type="button" class="btn btn-light btn-partage" (click)="modal.close('Close click')">Partager</button>
+        <button type="button" class="btn btn-light btn-partage"
+            (click)="confirmSharePost(); modal.close('Close click')">Partager</button>
     </div>
 </ng-template>

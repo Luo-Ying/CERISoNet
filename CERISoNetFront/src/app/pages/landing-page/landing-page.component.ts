@@ -35,9 +35,20 @@ export class LandingPageComponent implements OnInit {
     private _auth: AuthentificationService,
     private _VarGlob: VarGlobService,
     private _database: DatabaseService,
+    private _webSocket: WebSocketService,
   ) { }
 
   ngOnInit(): void {
+
+    this._webSocket.listen('updatePosts').subscribe((data) => {
+      this.postsArray = data;
+    })
+
+    //TODO: complete function websocket to get list of post after user shared one
+    this._webSocket.listen('sharedPost').subscribe((data) => {
+      console.log(data);
+
+    })
 
     if (localStorage.getItem('id')) {
 
