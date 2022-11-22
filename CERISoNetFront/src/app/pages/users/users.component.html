@@ -1,0 +1,22 @@
+<header id="header">
+    <app-header></app-header>
+</header>
+
+<div class="feature">
+    <div class="feature-inner">
+        <h1>Users</h1>
+    </div>
+</div>
+
+<br><br><br>
+
+<div>
+    <app-user-card *ngFor="let user of this.users | slice: (page-1) * pageSize : this.page * this.pageSize"
+        [user]='user'>
+    </app-user-card>
+</div>
+
+<div class="justify-content-rigth">
+    <ngb-pagination [(page)]="this.page" [pageSize]="this.pageSize" [collectionSize]="this.users.length">
+    </ngb-pagination>
+</div>

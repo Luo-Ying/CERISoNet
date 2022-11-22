@@ -22,6 +22,8 @@ import { PostComponent } from './components/post/post.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommentComponent } from './components/comment/comment.component';
 import { PostSharedComponent } from './components/post-shared/post-shared.component';
+import { UsersComponent } from './pages/users/users.component';
+import { UserCardComponent } from './components/user-card/user-card.component';
 
 @NgModule({
   declarations: [ /** Déclaration des composants, pipes, directives */
@@ -35,6 +37,8 @@ import { PostSharedComponent } from './components/post-shared/post-shared.compon
     PostComponent,
     CommentComponent,
     PostSharedComponent,
+    UsersComponent,
+    UserCardComponent,
   ],
   imports: [  /** Déclaration des modules utilisables */
     BrowserModule,

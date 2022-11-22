@@ -6,9 +6,7 @@
         <div id="top-nav">
             <ul>
                 <li><a href="/">LandingPage</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Contact</a></li>
-                <li><a href="#">FAQ</a></li>
+                <li><a href="/users">Users</a></li>
                 <!-- <li><a href="/login" role="button">Sign in</a></li> -->
                 <li *ngIf="this.isLogged == false"><a href="/login">Sign in</a></li>
                 <li *ngIf="this.isLogged == true"><a role="button" (click)="disconnect()">Disconnect</a></li>
@@ -24,9 +22,8 @@
                     <ng-template ngbPanelContent>
                         <div id="top-nav">
                             <ul>
-                                <li><a href="#">About</a></li>
-                                <li><a href="#">Contact</a></li>
-                                <li><a href="#">FAQ</a></li>
+                                <li><a href="/">LandingPage</a></li>
+                                <li><a href="/users">Users</a></li>
                                 <!-- <li><a href="/login">Login</a></li> -->
                                 <li *ngIf="this.isLogged == false"><a href="/login">Sign in</a></li>
                                 <li *ngIf="this.isLogged == true"><a role="button" (click)="disconnect()">Disconnect</a>

@@ -1,0 +1,20 @@
+.feature {
+    background: rgb(209, 139, 0);
+    padding: 18px;
+}
+
+.feature-inner {
+    margin: auto;
+    width: 970px;
+}
+
+.feature-inner h1 {
+    color: #f8dbdb;
+    font-size: 30px;
+}
+
+.justify-content-rigth {
+    display: flex !important;
+    justify-content: right !important;
+    margin-top: 2%;
+}

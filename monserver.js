@@ -286,9 +286,44 @@ io.on('connection', socketClient => {
 
     })
 
+    socketClient.on('getAllUsers', data => {
+        let responseData = {}
+        const sql = `SELECT * FROM fredouil.users;`
+        pgClientPool.connect((err, client, done) => {
+            if (err) { console.log(`Error connecting to pg server ${err.stack}`) }
+            else {
+                client.query(sql, (err, result) => {
+                    if (err) {
+                        responseData.status = 204
+                    }
+                    else {
+                        responseData.status = 200
+                        let users = []
+                        let i = 0
+                        for (row in result.rows) {
+                            user = {}
+                            user.id = result.rows[i].id
+                            user.identifiant = result.rows[i].identifiant
+                            user.nom = result.rows[i].nom
+                            user.prenom = result.rows[i].prenom
+                            user.avatar = result.rows[i].avatar
+                            user.status_connexion = result.rows[i].statut_connexion
+                            users[i] = user
+                            i++;
+                        }
+                        responseData.users = users
+                        // console.log(responseData)
+                    }
+                    io.emit('getAllUsers', responseData)
+                })
+                client.release()
+            }
+        })
+    })
+
 })
 
-io.emit('notification', 'le serveur communique avec l\'ensemble des clients connectés')
+// io.emit('notification', 'le serveur communique avec l\'ensemble des clients connectés')
 
 /**
  * 

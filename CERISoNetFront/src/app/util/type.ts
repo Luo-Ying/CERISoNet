@@ -32,3 +32,12 @@ export interface author {
     prenom: string;
     status_connexion: number;
 }
+
+export interface user {
+    id: number;
+    avatar: string;
+    identifiant: string;
+    nom: string;
+    prenom: string;
+    status_connexion: number;
+}

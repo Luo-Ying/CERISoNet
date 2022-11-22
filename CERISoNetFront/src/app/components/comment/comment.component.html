@@ -1,14 +1,16 @@
 <!-- <p>comment works!</p> -->
 
 <div class="unit-comment">
-    <div *ngIf="this.author">
+    <!-- <div *ngIf="this.author"> -->
+    <div>
         <img *ngIf="this.author.avatar!=null" src={{this.author.avatar}} alt={{this.author.identifiant}}
             class="float-left avatar">
         <img *ngIf="this.author.avatar==null" src={{this.avatarEmpty}} alt={{this.author.identifiant}}
             class="float-left avatar">
     </div>
 
-    <div *ngIf="this.author">
+    <!-- <div *ngIf="this.author"> -->
+    <div>
         <span class="color-d1a642">{{ this.author.identifiant}}</span>
         : {{ this.comment.text}}
     </div>
