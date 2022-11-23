@@ -16,6 +16,8 @@ export class PostSharedComponent implements OnInit {
 
   author: author | undefined;
 
+  avatarEmpty = "https://upload.wikimedia.org/wikipedia/commons/2/2c/Default_pfp.svg";
+
   constructor(private _database: DatabaseService) { }
 
   ngOnInit(): void {

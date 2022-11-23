@@ -21,6 +21,7 @@ export class LandingPageComponent implements OnInit {
 
   isCollapsed: boolean = false;
 
+
   isOrderByNbLikesAscending: boolean | undefined;
   isOrderByDateAscending: boolean | undefined;
 
@@ -42,6 +43,8 @@ export class LandingPageComponent implements OnInit {
 
     this._webSocket.listen('updatePosts').subscribe((data) => {
       this.postsArray = data;
+      this._VarGlob.bandeauMessage = "Comment added successfully!";
+      this._VarGlob.bandeauMsgType = "success";
     })
 
     //TODO: complete function websocket to get list of post after user shared one

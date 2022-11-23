@@ -1,7 +1,11 @@
 <div class="card bg-e1de9b card-comment">
     <div class="card-body">
         <br><br>
-        <img src={{this.author?.avatar}} alt="avatar" class="float-left avatar">
+        <!-- <img src={{this.author?.avatar}} alt="avatar" class="float-left avatar"> -->
+        <!-- <div *ngIf="this.author"> -->
+        <img *ngIf="this.author?.avatar!=''" src={{this.author?.avatar}} alt="avatar" class="float-left avatar">
+        <img *ngIf="this.author?.avatar==''" src={{this.avatarEmpty}} alt="avatar" class="float-left avatar">
+        <!-- </div> -->
         <br>
         <div>
             {{this.author?.identifiant}}
