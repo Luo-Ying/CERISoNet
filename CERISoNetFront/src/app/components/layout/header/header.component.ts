@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthentificationService } from 'src/app/services/authentification.service';
 import { VarGlobService } from 'src/app/services/var-glob.service';
+import { WebSocketService } from 'src/app/services/web-socket.service';
 
 @Component({
   selector: 'app-header',
@@ -18,7 +19,8 @@ export class HeaderComponent implements OnInit {
   constructor(
     private _auth: AuthentificationService,
     private router: Router,
-    private _VarGlob: VarGlobService
+    private _VarGlob: VarGlobService,
+    private _webSocket: WebSocketService,
   ) {
     this.isLogged = localStorage['id'] ? true : false;
   }
@@ -38,11 +40,13 @@ export class HeaderComponent implements OnInit {
         this._VarGlob.isLogged = false;
         localStorage.removeItem('id');
         this.router.navigate(['/login'], {});
+        this._webSocket.emit('getAllUsers', {});
       },
       error => {
 
       }
     );
+    // this._webSocket.emit('getAllUsers', {});
   }
 
 }

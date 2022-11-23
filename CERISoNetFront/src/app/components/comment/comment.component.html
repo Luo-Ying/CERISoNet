@@ -1,29 +1,30 @@
 <!-- <p>comment works!</p> -->
 
 <div class="unit-comment">
-    <!-- <div *ngIf="this.author"> -->
-    <div>
-        <img *ngIf="this.author.avatar!=null" src={{this.author.avatar}} alt={{this.author.identifiant}}
-            class="float-left avatar">
-        <img *ngIf="this.author.avatar==null" src={{this.avatarEmpty}} alt={{this.author.identifiant}}
-            class="float-left avatar">
-    </div>
+    <div *ngIf="this.author">
+        <div>
+            <img *ngIf="this.author.avatar!=null" src={{this.author.avatar}} alt={{this.author.identifiant}}
+                class="float-left avatar">
+            <img *ngIf="this.author.avatar==null" src={{this.avatarEmpty}} alt={{this.author.identifiant}}
+                class="float-left avatar">
+        </div>
 
-    <!-- <div *ngIf="this.author"> -->
-    <div>
-        <span class="color-d1a642">{{ this.author.identifiant}}</span>
-        : {{ this.comment.text}}
-    </div>
-    <br>
-    <div class="text-secondary">
-        {{this.comment.date}}
-        {{ this.comment.hour}}
-    </div>
+        <div *ngIf="this.author">
+            <div>
+                <span class="color-d1a642">{{ this.author.identifiant}}</span>
+                : {{ this.comment.text}}
+            </div>
+            <br>
+            <div class="text-secondary">
+                {{this.comment.date}}
+                {{ this.comment.hour}}
+            </div>
 
-    <div *ngIf="this.author && this.comment?.commentedBy == this.idUser" class="delete">
-        <button (click)="deleteComment()" class="btn-delete"><span class="material-symbols-outlined icon-delete"> delete
-            </span></button>
-        <label (click)="deleteComment()" class="text-muet">suprrimer</label>
-    </div>
-</div>
-<br><br><br>
+            <div *ngIf="this.author && this.comment?.commentedBy == this.idUser" class="delete">
+                <button (click)="deleteComment()" class="btn-delete"><span
+                        class="material-symbols-outlined icon-delete"> delete
+                    </span></button>
+                <label (click)="deleteComment()" class="text-muet">suprrimer</label>
+            </div>
+        </div>
+        <br><br><br>

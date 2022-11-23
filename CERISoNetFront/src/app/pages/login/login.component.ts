@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AuthentificationService } from 'src/app/services/authentification.service';
 import { VarGlobService } from 'src/app/services/var-glob.service';
 import { HeaderComponent } from 'src/app/components/layout/header/header.component';
+import { WebSocketService } from 'src/app/services/web-socket.service';
 
 
 interface Response {
@@ -38,6 +39,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private _auth: AuthentificationService,
     private _VarGlob: VarGlobService,
+    private _webSocket: WebSocketService,
   ) {
     // this._VarGlob.heading = "login";
   }
@@ -60,7 +62,7 @@ export class LoginComponent implements OnInit {
           this._VarGlob.bandeauMessage = "Connexion réussi ! Bienvenu " + this.formData.value.username + `, La dernière connexion est ${this._VarGlob.userLastLogin}`;
           this._VarGlob.bandeauMsgType = 'info';
           this.router.navigate(['/'], {});
-
+          this._webSocket.emit('getAllUsers', {});
         }
         else {
           this._VarGlob.bandeauMessage = "Connexion echouée ! Verifier votre username ou password.";

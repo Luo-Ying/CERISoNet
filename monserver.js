@@ -313,6 +313,11 @@ io.on('connection', socketClient => {
                         }
                         responseData.users = users
                         // console.log(responseData)
+                        responseData.users.forEach(e => {
+                            if (e.status_connexion == 1) {
+                                console.log(e);
+                            }
+                        });
                     }
                     io.emit('getAllUsers', responseData)
                 })

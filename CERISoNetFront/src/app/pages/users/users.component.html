@@ -11,12 +11,35 @@
 <br><br><br>
 
 <div>
-    <app-user-card *ngFor="let user of this.users | slice: (page-1) * pageSize : this.page * this.pageSize"
-        [user]='user'>
-    </app-user-card>
-</div>
 
-<div class="justify-content-rigth">
-    <ngb-pagination [(page)]="this.page" [pageSize]="this.pageSize" [collectionSize]="this.users.length">
-    </ngb-pagination>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope=" col">#</th>
+                <th scope="col">Pseudo</th>
+                <th scope="col">Nom Prenom</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let user of usersOnline">
+                <th scope="row">{{ user.id }}</th>
+                <td>
+                    <!-- <img *ngIf="user.avatar != ''" [src]={{user.avatar}} class="me-2" style="width: 20px" /> -->
+                    {{ user.identifiant }}
+                </td>
+                <td>{{ user.nom }} {{ user.prenom }}</td>
+                <td style="color: green;">online</td>
+            </tr>
+            <tr *ngFor="let user of usersOutline">
+                <th scope="row" style="color: grey;">{{ user.id }}</th>
+                <td style="color: grey;">
+                    <!-- <img [src]={{user.avatar}} class="me-2" style="width: 20px" /> -->
+                    {{ user.identifiant }}
+                </td>
+                <td style="color: grey;">{{ user.nom }} {{ user.prenom }}</td>
+                <td style="color: grey;">outline</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
