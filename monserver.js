@@ -240,7 +240,6 @@ io.on('connection', socketClient => {
 
     })
 
-    // TODO: 
     socketClient.on('sharePost', data => {
         // console.log(data);
         const objPost = data.objPost
@@ -249,8 +248,6 @@ io.on('connection', socketClient => {
                 return console.log('erreur connexion base de données');
             }
             if (mongoClient) {
-                // console.log("coucou??");
-                //TODO: construire l'objet postToShared
                 /**Exécution des requêtes - findAll*/
                 console.log("data reçu du post:  ");
                 console.log(objPost);
