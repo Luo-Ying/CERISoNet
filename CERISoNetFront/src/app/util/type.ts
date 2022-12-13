@@ -22,6 +22,7 @@ export interface post {
     images: image;
     likes: number;
     likedby: Array<number>;
+    author: author;
 }
 
 export interface author {

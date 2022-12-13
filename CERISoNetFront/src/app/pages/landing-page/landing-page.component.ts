@@ -6,7 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AuthentificationService } from 'src/app/services/authentification.service';
 import { DatabaseService } from 'src/app/services/database.service';
 import { VarGlobService } from 'src/app/services/var-glob.service';
-import { comment, post } from 'src/app/util/type';
+import { comment, post, author } from 'src/app/util/type';
 import { transferDateToTimestamp } from 'src/app/util/algorithm';
 import { WebSocketService } from 'src/app/services/web-socket.service';
 
@@ -45,12 +45,6 @@ export class LandingPageComponent implements OnInit {
       this.postsArray = data;
       this._VarGlob.bandeauMessage = "Comment added successfully!";
       this._VarGlob.bandeauMsgType = "success";
-    })
-
-    //TODO: complete function websocket to get list of post after user shared one
-    this._webSocket.listen('sharedPost').subscribe((data) => {
-      console.log(data);
-
     })
 
     if (localStorage.getItem('id')) {
@@ -173,8 +167,16 @@ export class LandingPageComponent implements OnInit {
               })
             }
           }
+          console.log(element);
+          // console.log(element.Shared);
+          console.log(element.author);
+          // let author: author;
+          this._database.GetInfosUserById(element.createdBy).subscribe(data => {
+            element.author = data;
+          });
           this.postsArray.push(element);
         });
+        // TODO: modifier les code suivant, celui pour afficher les author! (vu que la récupération d'author est fait ici!)
 
       },
       error => {

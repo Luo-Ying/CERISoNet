@@ -26,7 +26,6 @@ export class DatabaseService {
         },
         error => { /** erreur de l’observable httpClient */
           console.error('une erreur est survenu!', error);
-
         },
         () => { /** terminaison de l’observable httpClient */
           observer.next(result);  /** renvoi des données pour l’observable principal */
